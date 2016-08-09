@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-09 11:36:55
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-09 15:40:52
+# @Last Modified time: 2016-08-09 15:46:23
 
 from loader import Loader
 
@@ -29,15 +29,26 @@ class Classifier(object):
 
         self._training_data = Loader.load_training_data(filepath=training_data_file_path) if self._training_data_file_path else Loader.load_training_data()
 
-        self.clf = svm.OneClassSVM(nu=0.1, kernel="rbf", gamma=0.1)
+        self.classifiers = {
+            DC_CATEGORY_NAME_MASSAGE: svm.OneClassSVM(nu=0.1, kernel="rbf", gamma=0.1),
+            DC_CATEGORY_NAME_ESCORT: svm.OneClassSVM(nu=0.1, kernel="rbf", gamma=0.1),
+            DC_CATEGORY_NAME_JOB_ADS: svm.OneClassSVM(nu=0.1, kernel="rbf", gamma=0.1)
+        }
 
 
     def train(self):
-        X_train = Loader.load_vectors(self._training_data)
-        X_train = np.array(np.mat(';'.join([_ for _ in X_train])))
-        self.clf.fit(X_train)
-        y_pred_train = self.clf.predict(X_train)
-        print y_pred_train
+        for (cate_name, cate_no) in DC_CATEGORY_NO_MAPPING.iteritems():
+            X_train = Loader.load_vectors([_ for _ in self._training_data if _._label == cate_no])
+            if not X_train:
+                continue
+            X_train = np.array(np.mat(';'.join([_ for _ in X_train])))
+            self.classifiers[cate_name].fit(X_train)
+
+        # X_train = Loader.load_vectors(self._training_data)
+        # X_train = np.array(np.mat(';'.join([_ for _ in X_train])))
+        # self.clf.fit(X_train)
+        # y_pred_train = self.clf.predict(X_train)
+        # print y_pred_train
 
     def test(self):
         pass
