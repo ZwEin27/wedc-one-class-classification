@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-09 12:13:09
+# @Last Modified time: 2016-08-09 13:15:40
 
 
 import os
@@ -18,6 +18,7 @@ DC_DATA_FILE_FORMATS = [
 
 
 DC_DEFAULT_TRAINING_DATA_FILEPATH = os.path.join(os.path.dirname(__file__), 'res', 'training_data.csv')
+DC_DEFAULT_TESTING_DATA_FILEPATH = os.path.join(os.path.dirname(__file__), 'res', 'testing_data.csv')
 
 
 class Loader(object):
@@ -63,6 +64,11 @@ class Loader(object):
     @staticmethod
     def load_training_data(filepath=DC_DEFAULT_TRAINING_DATA_FILEPATH):
         return Loader.load_data(filepath, format='csv')
+
+    @staticmethod
+    def load_testing_data(filepath=DC_DEFAULT_TESTING_DATA_FILEPATH):
+        return Loader.load_data(filepath, format='csv')
+
        
 
 print Loader.load_training_data()
