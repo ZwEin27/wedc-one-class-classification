@@ -2,11 +2,12 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-09 13:25:37
+# @Last Modified time: 2016-08-09 13:30:37
 
 
 import os
 import csv
+from node import Node
 
 DC_DATA_FILE_FORMAT_JSON = 'json'
 DC_DATA_FILE_FORMAT_CSV = 'csv'
@@ -28,6 +29,7 @@ class Loader(object):
     #################################################
 
     def __load_data_jsonlines(path):
+        # to be updated
         import jsonlines
         dataset = []
         lines = jsonlines.open(path, mode='r')
@@ -41,7 +43,8 @@ class Loader(object):
         with open(path, 'rb') as csvfile:
             reader = csv.reader(csvfile)
             for row in reader:
-                dataset.append(row)
+                new_node = Node(row[1], label=row[0])
+                dataset.append(new_node)
         return dataset
 
     __loader_data_funcs = {
@@ -69,11 +72,11 @@ class Loader(object):
     def load_testing_data(filepath=DC_DEFAULT_TESTING_DATA_FILEPATH):
         return Loader.load_data(filepath, format='csv')
 
-    
+
 
        
 
-# print Loader.load_training_data()
+Loader.load_training_data()
 
 
 
