@@ -2,11 +2,12 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-09 14:14:21
+# @Last Modified time: 2016-08-09 14:45:30
 
 
 from vendor.crf_tokenizer import CrfTokenizer
 from common import cleaner
+from seed import seeds
 
 class Node(object):
 
@@ -14,8 +15,8 @@ class Node(object):
         self._content = content
         self._sid = sid
         self._label = label
-
-        self.features = self.load_features(content)
+        self._seeds = seeds
+        self._features = self.load_features(content)
 
     #################################################
     # Clean Content 
@@ -40,14 +41,28 @@ class Node(object):
     #################################################
     
     def load_seed_features(self, content):
+        ans = {}
         content = self.clean(content)
-        
-        return {}
+        seed_words = seeds.keys()
+        seeds_size = len(seed_words)
+        # seed_words.sort()
+        vector = ['0'] * seeds_size
+        tokens = content.split(' ')
+        for i in range(seeds_size):
+            if seed_words[i] in tokens:
+                ans.setdefault(seed_words[i], str(1.0 * float(seeds[seed_words[i]])))
+        return ans
 
     def load_ext_features(self, content):
         return {}
 
     def load_features(self, content):
         return dict(self.load_seed_features(content).items() + self.load_ext_features(content).items())
+
+    #################################################
+    # Generate Vector
+    #################################################
+    
+
 
 
