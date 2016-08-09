@@ -2,17 +2,18 @@
 # @Author: ZwEin
 # @Date:   2016-08-09 13:50:35
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-09 14:07:09
+# @Last Modified time: 2016-08-09 14:13:21
 
 
 # from common import stopword
 # from common import hasher
 # from common import stemmer
 # from common import string
-
+import re
 import stopword
 import hasher
 import stemmer
+import string
 
 stopset = stopword.get_stopword_set()
 
@@ -80,7 +81,7 @@ def remove_dups(posts, mapping_path=None):
 def clean_text(text):
     # convert html code
     text = unescape(text)
-    text = text.encode('ascii', 'ignore')
+    # text = text.encode('ascii', 'ignore')
 
     # remove tags
     text = re.sub(r'<[^>]+>', ' ', text)
