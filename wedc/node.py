@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-09 14:12:42
+# @Last Modified time: 2016-08-09 14:14:21
 
 
 from vendor.crf_tokenizer import CrfTokenizer
@@ -41,7 +41,7 @@ class Node(object):
     
     def load_seed_features(self, content):
         content = self.clean(content)
-        print content
+        
         return {}
 
     def load_ext_features(self, content):
