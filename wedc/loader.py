@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-09 13:15:40
+# @Last Modified time: 2016-08-09 13:25:37
 
 
 import os
@@ -69,9 +69,11 @@ class Loader(object):
     def load_testing_data(filepath=DC_DEFAULT_TESTING_DATA_FILEPATH):
         return Loader.load_data(filepath, format='csv')
 
+    
+
        
 
-print Loader.load_training_data()
+# print Loader.load_training_data()
 
 
 
