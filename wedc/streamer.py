@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-10 13:53:23
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-10 14:12:43
+# @Last Modified time: 2016-08-10 14:32:13
 
 
 import urllib3
@@ -15,6 +15,66 @@ import hashlib
 
 urllib3.disable_warnings()
 
+
+######################################################################
+#   Constant
+######################################################################
+
+DC_STREAMER_DEFAULT_KEYWORDS = [
+    'click',
+    'tel',
+    'sorry',
+    'call',
+    'incall',
+    'outcall',
+    'hh',
+    'hr',
+    'quick',
+    'quickie',
+    'hott',
+    'legged',
+    'busty',
+    'male',
+    'playboy',
+    'gigolo',
+    'handsome',
+    'hunk',
+    'ts',
+    'tv',
+    'transvestite',
+    'tranny',
+    'tgirl',
+    'shemale',
+    'she-male',
+    'transsexual',
+    'transexual',
+    'ladyboy',
+    'employee',
+    'manager',
+    'OSHA',
+    'license',
+    'business',
+    'technician',
+    'certified',
+    'degree',
+    'salary',
+    'retail',
+    '401k',
+    'insurance',
+    'spa',
+    'table',
+    'shower',
+    'nuru',
+    'slide',
+    'therapy',
+    'therapist',
+    'bodyrub',
+    'sauna',
+    'gel',
+    'shiatsu',
+    'jacuzzi'
+]
+
 ######################################################################
 #   Regular Expression
 ######################################################################
@@ -24,6 +84,38 @@ re_tokenize = re.compile(r'[\s!\"#\$%&\'\(\)\*\+,\-\./:;<=>\?@\[\\\]\^_`{|}~]')
 ######################################################################
 #   Query
 ######################################################################
+
+sites_query = {
+    "aggs": {
+        "by-posttime": {
+            "filter": {
+                "bool": {
+                    "must": [
+                        {
+                            "term": {
+                                "version": "2.0"
+                            }
+                        },
+                        {
+                            "exists": {
+                                "field": "extractions.text"
+                            }
+                        }
+                    ]
+                }
+            },
+            "aggs": {
+                "posttime": {
+                    "terms": {
+                        "field": "extractions.text.attribs.target",
+                        "size": 1000
+                    }
+                }
+            }
+        }
+    },
+    "size": 0
+}
 
 search_query = { 
     "query": {
@@ -57,6 +149,8 @@ search_query = {
     "size": 1
 }
 
+
+
 ######################################################################
 #   Main Class
 ######################################################################
@@ -68,7 +162,12 @@ class Streamer(object):
         self.cdr = 'https://' + token + '@cdr-es.istresearch.com:9200/memex-domains'
         self.es = Elasticsearch([self.cdr])
 
-    def load_data(self, keyword):
+    def load_sites(self):
+        buckets = self.es.search(index='escorts', body=sites_query)['aggregations']['by-posttime']['posttime']['buckets']
+        sites = map(lambda x: x['key'], buckets)
+        return sites
+
+    def load_data(self, site_name, keyword):
         # load data for specifc site name
         try:
             search_query['query']['filtered']['filter']['bool']['must'][0]['term']['extractions.text.attribs.target'] = site_name
@@ -98,6 +197,9 @@ class Streamer(object):
         def hash(data):
             return hashlib.sha224(clean(data).encode('ascii', 'ignore')).hexdigest()#+hashlib.sha256(data).hexdigest()+hashlib.md5(data).hexdigest()
 
+        # clean
+        # data_lines = [clean(_) for _ in data_lines]
+
         # dedup
         dedup = {}
         for data in data_lines:
@@ -106,13 +208,18 @@ class Streamer(object):
 
         return data_lines
 
-    def generate(self, output_path=None, keywords=['ave','blvd','street','st','avenue','rd','boulevard','parkway','pkwy'], num_data=200):
+    def generate(self, output_path=None, keywords=['massage','escort','street','st','avenue','rd','boulevard','parkway','pkwy'], num_data=200):
         ans = {}
-        data = []
-        for keyword in keywords:
-            ans.setdefault(keyword, [])
-            ans[keyword] += self.load_data(keyword)
-      
+        sites = self.load_sites()
+        for site_name in sites:
+            data = []
+            for keyword in keywords:
+                ans.setdefault(keyword, [])
+                ans[keyword] += self.load_data(site_name, keyword)
+                # data += self.load_data(site_name, keyword)
+            # data = data[:num_data]
+            # data = self.dedup_data(data)[:num_data]
+            # ans += data
         ans = {k:self.dedup_data(v) for (k, v) in ans.iteritems()}
 
         if output_path:
