@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-10 13:45:54
+# @Last Modified time: 2016-08-10 13:46:02
 
 
 import os
@@ -87,7 +87,6 @@ class Loader(object):
             vector = node.generate_vector()
             vectors.append(vector)
         return vectors
-
 
 
 if __name__ == '__main__':
