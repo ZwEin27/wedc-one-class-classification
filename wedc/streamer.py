@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-10 13:53:23
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-10 14:01:00
+# @Last Modified time: 2016-08-10 14:12:43
 
 
 import urllib3
@@ -25,41 +25,36 @@ re_tokenize = re.compile(r'[\s!\"#\$%&\'\(\)\*\+,\-\./:;<=>\?@\[\\\]\^_`{|}~]')
 #   Query
 ######################################################################
 
-search_query = {
+search_query = { 
     "query": {
         "filtered": {
-            "filter": {
-                "bool": {
-                    "must": [
-                        {
-                            "term": {
-                                "extractions.text.attribs.target": ""
-                            }
-                        },
-                        {
-                            "exists": {
-                                "field": "extractions"
-                            }
-                        },
-                        {
-                            "exists": {
-                                "field": "extractions.text.results"
-                            }
-                        }
-                    ]
-                }
-            },
-            "query": {
-                "match": {
-                    "extractions.text.results": "blvd"
-                }
+          "filter": {
+            "exists": {
+              "field": "extractions.text"
             }
+          },
+          "query": {
+            "match": {
+                "extractions.text.results": "massage"
+            }
+          }
         }
     },
-    "_source": [
-        "extractions.text.results"
+    "_source": [ 
+      "raw_content", 
+      "extractions.posttime.results",
+      "extractions.city.results",
+      "extractions.text.results",
+      "extractions.region.results",
+      "extractions.title.results",
+      "extractions.userlocation.results",
+      "extractions.phonenumber.results",
+      "extractions.sid.results",
+      "extractions.otherads.results",
+      "extractions.age.results",
+      "doc_id"
     ],
-    "size": 500
+    "size": 1
 }
 
 ######################################################################
