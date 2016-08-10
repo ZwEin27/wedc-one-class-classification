@@ -2,13 +2,15 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-09 15:46:33
+# @Last Modified time: 2016-08-09 16:30:26
 
 
 import os
 import csv
+import codecs
 from node import Node
 
+DC_DATA_FILE_FORMAT_JSONLINES = 'jsonline'
 DC_DATA_FILE_FORMAT_JSON = 'json'
 DC_DATA_FILE_FORMAT_CSV = 'csv'
 
@@ -41,20 +43,21 @@ class Loader(object):
         import csv
         dataset = []
         with open(path, 'rb') as csvfile:
+        # with codecs.open(path, 'r', 'utf-8') as csvfile:
             reader = csv.reader(csvfile)
             for row in reader:
-                new_node = Node(row[1], label=row[0])
+                new_node = Node(row[1].decode('utf-8', 'ignore').encode('ascii', 'ignore'), label=row[0])
                 dataset.append(new_node)
                 # break
         return dataset
 
     __loader_data_funcs = {
-        DC_DATA_FILE_FORMAT_JSON: __load_data_jsonlines,
+        DC_DATA_FILE_FORMAT_JSONLINES: __load_data_jsonlines,
         DC_DATA_FILE_FORMAT_CSV: __load_data_csv
     }
 
     @staticmethod
-    def load_data(path, format='jsonlines'):
+    def load_data(path, format=DC_DATA_FILE_FORMAT_JSONLINES):
         """
         basic interface to load data
         
@@ -67,11 +70,11 @@ class Loader(object):
     
     @staticmethod
     def load_training_data(filepath=DC_DEFAULT_TRAINING_DATA_FILEPATH):
-        return Loader.load_data(filepath, format='csv')
+        return Loader.load_data(filepath, format=DC_DATA_FILE_FORMAT_CSV)
 
     @staticmethod
     def load_testing_data(filepath=DC_DEFAULT_TESTING_DATA_FILEPATH):
-        return Loader.load_data(filepath, format='csv')
+        return Loader.load_data(filepath, format=DC_DATA_FILE_FORMAT_CSV)
 
     @staticmethod
     def load_vectors(nodes):

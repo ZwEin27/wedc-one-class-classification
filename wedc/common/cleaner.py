@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-09 13:50:35
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-09 14:13:21
+# @Last Modified time: 2016-08-09 16:20:40
 
 
 # from common import stopword
@@ -82,6 +82,8 @@ def clean_text(text):
     # convert html code
     text = unescape(text)
     # text = text.encode('ascii', 'ignore')
+    
+    # text = re.sub(r'&[a-z]+?;', ' ', text)
 
     # remove tags
     text = re.sub(r'<[^>]+>', ' ', text)

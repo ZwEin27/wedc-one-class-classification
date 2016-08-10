@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-09 15:05:52
+# @Last Modified time: 2016-08-09 19:59:22
 
 
 from vendor.crf_tokenizer import CrfTokenizer
@@ -30,16 +30,29 @@ class Node(object):
     def clean(self, text):
         # text = text.encode('ascii', 'ignore')
         text = cleaner.clean_text(text)
+        text = text.encode('utf-8')
+        # text = unicode(text, 'utf-8')
+        # try:
+        #     text = text.encode('ascii', 'ignore')
+        # except:
+        #     text = text.decode('utf-8', 'ignore')
         t = CrfTokenizer()
         t.setRecognizeHtmlEntities(True)
         t.setRecognizeHtmlTags(True)
         t.setSkipHtmlTags(True)
         tokens = t.tokenize(text)
+
         tokens = [cleaner.clean_token(token) for token in tokens]
+        tokens = [_ for _ in set(tokens) if _]
 
-        tokens = [_ for _ in tokens if _]
-        return str(' '.join(set(tokens)))
+        try:
 
+            str(' '.join(tokens))
+        except:
+            print text.encode('utf-8')
+            print tokens
+
+        return str(' '.join(tokens)).decode('utf-8', 'ignore').encode('ascii', 'ignore')
 
     #################################################
     # Load Feature
