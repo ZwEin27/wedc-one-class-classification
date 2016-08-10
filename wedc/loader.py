@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-09 16:30:26
+# @Last Modified time: 2016-08-10 11:58:05
 
 
 import os
@@ -46,7 +46,7 @@ class Loader(object):
         # with codecs.open(path, 'r', 'utf-8') as csvfile:
             reader = csv.reader(csvfile)
             for row in reader:
-                new_node = Node(row[1].decode('utf-8', 'ignore').encode('ascii', 'ignore'), label=row[0])
+                new_node = Node(row[1].decode('utf-8', 'ignore').encode('ascii', 'ignore'), label=row[0], hasPhone=True)
                 dataset.append(new_node)
                 # break
         return dataset

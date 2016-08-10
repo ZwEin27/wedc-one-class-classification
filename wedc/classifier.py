@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-09 11:36:55
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-09 20:49:02
+# @Last Modified time: 2016-08-09 20:53:14
 
 from loader import Loader
 
@@ -50,12 +50,14 @@ class Classifier(object):
         # y_pred_train = self.clf.predict(X_train)
         # print y_pred_train
 
-    def evaluate(self, train_test_split_rate=.8):
+    def evaluate(self, train_test_split_rate=.8, random_seed=23):
         for (cate_name, cate_no) in DC_CATEGORY_NO_MAPPING.iteritems():
             print 'evaluate', cate_name, 'with label', cate_no
             print '-'*40
             inner_data = Loader.load_vectors([_ for _ in self._training_data if _._label == cate_no])
             outer_data = Loader.load_vectors([_ for _ in self._training_data if _._label != cate_no])
+            # np.random.seed(random_seed)
+            # np.random.shuffle(inner_data)
             split_point = int(len(inner_data)*train_test_split_rate)
             train_data = inner_data[:split_point]
             test_data = inner_data[split_point:]
