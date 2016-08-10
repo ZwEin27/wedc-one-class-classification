@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-10 11:58:05
+# @Last Modified time: 2016-08-10 13:45:54
 
 
 import os
@@ -77,6 +77,10 @@ class Loader(object):
         return Loader.load_data(filepath, format=DC_DATA_FILE_FORMAT_CSV)
 
     @staticmethod
+    def load_dig_data(filepath):
+        return Loader.load_data(filepath, format=DC_DATA_FILE_FORMAT_JSON)
+
+    @staticmethod
     def load_vectors(nodes):
         vectors = []
         for node in nodes:
@@ -89,6 +93,7 @@ class Loader(object):
 if __name__ == '__main__':
 
     Loader.load_training_data()
+    Loader.load_dig_data()
 
 
 
