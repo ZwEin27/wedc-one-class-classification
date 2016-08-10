@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-09 11:36:55
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-09 20:32:23
+# @Last Modified time: 2016-08-09 20:49:02
 
 from loader import Loader
 
@@ -52,12 +52,19 @@ class Classifier(object):
 
     def evaluate(self, train_test_split_rate=.8):
         for (cate_name, cate_no) in DC_CATEGORY_NO_MAPPING.iteritems():
+            print 'evaluate', cate_name, 'with label', cate_no
+            print '-'*40
             inner_data = Loader.load_vectors([_ for _ in self._training_data if _._label == cate_no])
             outer_data = Loader.load_vectors([_ for _ in self._training_data if _._label != cate_no])
             split_point = int(len(inner_data)*train_test_split_rate)
             train_data = inner_data[:split_point]
             test_data = inner_data[split_point:]
             outlier_data = outer_data
+
+            print 'total ground truth:', len(inner_data), \
+                ', train_data:', len(train_data), \
+                ', test_data:', len(test_data), \
+                ', outlier_data:', len(outlier_data)
             
             if not train_data or not test_data or not outlier_data:
                 print len(train_data), len(test_data), len(outlier_data)
@@ -78,8 +85,13 @@ class Classifier(object):
             n_error_test = y_pred_test[y_pred_test == -1].size
             n_error_outliers = y_pred_outliers[y_pred_outliers == 1].size
 
-        
+            print 'error_train:', str(n_error_train)+'/'+str(len(train_data)), \
+                ', error_test:', str(n_error_test)+'/'+str(len(test_data)), \
+                ', error_outlier:', str(n_error_outliers)+'/'+str(len(outlier_data))
 
+            print '\n\n\n'
+
+        
     def predict(self):
         pass
 
