@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-09 19:59:22
+# @Last Modified time: 2016-08-09 20:31:37
 
 
 from vendor.crf_tokenizer import CrfTokenizer
@@ -81,10 +81,10 @@ class Node(object):
     #################################################
     
     def generate_vector(self):
-        if not self._features:
-            return []
         features = DC_NODE_FEATURES
         feature_size = len(features)
+        if not self._features:
+            return ' '.join(['0'] * feature_size)
         vector = ['0'] * feature_size
         for i in range(feature_size):
             if features[i] in self._features:
