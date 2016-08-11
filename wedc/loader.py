@@ -2,14 +2,14 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-11 13:22:26
+# @Last Modified time: 2016-08-11 13:33:29
 
 
 import os
 import csv
 import json
 import codecs
-from node import Node
+from node import *
 
 DC_DATA_FILE_FORMAT_JSONLINES = 'jsonlines'
 DC_DATA_FILE_FORMAT_JSON = 'json'
@@ -43,11 +43,32 @@ class Loader(object):
         return dataset
 
     def __load_data_json(path):
+
+        def es_content_loader(content):
+            if not isinstance(content, basestring):
+                content = ' '.join(content)
+            return content
+
         dataset = []
         json_objs = json.load(codecs.open(path, 'r', 'utf-8'))
         for json_obj in json_objs:
+            source = json_obj['_source']
+
+            doc_id = source[DC_NODE_EXT_FEATURE_NAME_DOCID]
+            raw_content = source[DC_NODE_EXT_FEATURE_NAME_CONTENT]
+            extractions = source['extractions']
+
+            posttime = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_POSTTIME]['results'])
+            city = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_CITY]['results'])
+            text = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_TEXT]['results'])
+            region = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_REGION]['results'])
+            title = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_TITLE]['results'])
+            userlocation = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_USERLOCATION]['results'])
+            phonenumber = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_PHONENUMBER]['results'])
+            sid = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_SID]['results'])
+            otherads = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_OTHERADS]['results'])
+            age = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_AGE]['results'])
             
-            print json_obj
 
 
         return dataset
