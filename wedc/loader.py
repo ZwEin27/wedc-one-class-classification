@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-11 15:03:39
+# @Last Modified time: 2016-08-11 16:51:33
 
 
 import re
@@ -54,7 +54,8 @@ class Loader(object):
             return content
 
         dataset = []
-        json_objs = json.load(codecs.open(path, 'r', 'utf-8'))
+        # json_objs = json.load(codecs.open(path, 'r', 'utf-8'))
+        json_objs = json.load(codecs.open(path, 'r'))
         for json_obj in json_objs:
             source = json_obj['_source']
 
@@ -103,7 +104,7 @@ class Loader(object):
                     age=age)
 
                 dataset.append(new_node)
-                break
+                # break
         return dataset
 
     def __load_data_csv(path):
@@ -149,7 +150,28 @@ class Loader(object):
             writer = csv.DictWriter(csvfile, fieldnames=[DC_NODE_EXT_FEATURE_NAME_CONTENT]+DC_NODE_EXT_FEATURES)
             writer.writeheader()
             for data in dataset:
-                writer.writerow(dict({DC_NODE_EXT_FEATURE_NAME_CONTENT: ' '.join(data._content.split('\n'))}.items()+data._attrs.items()))
+                try:
+                    content = data._content
+                    if not content:
+                        continue
+                    content = ' '.join(content.split('\n'))
+                    # print '1111111111111111'
+                    content = unicode(content, errors='ignore')
+                    # print content#.decode('utf-8', 'ignore')
+                    # print '2222222222222222'
+                    # content = ''
+                    data = {k:v.encode('utf-8') for (k, v) in data._attrs.iteritems() if v}
+                    data.setdefault(DC_NODE_EXT_FEATURE_NAME_CONTENT, content)
+                    # print '3333333333333333'
+                    # print '#'*100
+                    writer.writerow(data)
+                    # print '4444444444444444'
+                except Exception as e:
+                    # print content
+                    print e
+                    raise Exception('ss')
+                    
+                
                 # break
 
     __loader_generate_data_funcs = {

@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-11 14:58:58
+# @Last Modified time: 2016-08-11 15:44:03
 
 
 from vendor.crf_tokenizer import CrfTokenizer
@@ -41,7 +41,7 @@ DC_NODE_FEATURES = DC_NODE_EXT_FEATURES + sorted(seeds)
 class Node(object):
 
     def __init__(self, content, sid=None, label=None, **attrs):
-        self._content = content.encode('utf-8')
+        self._content = content.encode('utf-8') if content else None
         self._sid = sid
         self._label = label
         self._seeds = seeds
@@ -58,6 +58,8 @@ class Node(object):
     #################################################
 
     def clean(self, text):
+        if not text:
+            return ''
         # text = text.encode('ascii', 'ignore')
         text = cleaner.clean_text(text)
         text = text.encode('utf-8')
@@ -89,6 +91,8 @@ class Node(object):
     #################################################
     
     def load_seed_features(self, content):
+        if not content:
+            return {}
         ans = {}
         content = self.clean(content)
         seed_words = seeds.keys()
