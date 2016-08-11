@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-11 15:00:30
+# @Last Modified time: 2016-08-11 15:03:39
 
 
 import re
@@ -26,6 +26,7 @@ DC_DATA_FILE_FORMATS = [
 DC_DEFAULT_DIG_WEBPAGE_DATA_FILEPATH = os.path.join(os.path.dirname(__file__), 'res', 'webpages.json')
 
 DC_DEFAULT_UNLABELLED_DATA_FILEPATH = os.path.join(os.path.dirname(__file__), 'res', 'unlabelled_data.csv')
+DC_DEFAULT_LABELLED_DATA_FILEPATH = os.path.join(os.path.dirname(__file__), 'res', 'labelled_data.csv')
 DC_DEFAULT_TRAINING_DATA_FILEPATH = os.path.join(os.path.dirname(__file__), 'res', 'training_data.csv')
 DC_DEFAULT_TESTING_DATA_FILEPATH = os.path.join(os.path.dirname(__file__), 'res', 'testing_data.csv')
 
