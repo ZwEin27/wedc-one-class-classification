@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-10 13:53:23
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-10 14:32:13
+# @Last Modified time: 2016-08-11 13:02:40
 
 
 import urllib3
@@ -120,16 +120,32 @@ sites_query = {
 search_query = { 
     "query": {
         "filtered": {
-          "filter": {
-            "exists": {
-              "field": "extractions.text"
+            "filter": {
+                "bool": {
+                    "must": [
+                        {
+                            "term": {
+                                "extractions.text.attribs.target": ""
+                            }
+                        },
+                        {
+                            "exists": {
+                                "field": "extractions"
+                            }
+                        },
+                        {
+                            "exists": {
+                                "field": "extractions.text.results"
+                            }
+                        }
+                    ]
+                }
+            },
+            "query": {
+                "match": {
+                    "extractions.text.results": "massage"
+                }
             }
-          },
-          "query": {
-            "match": {
-                "extractions.text.results": "massage"
-            }
-          }
         }
     },
     "_source": [ 
@@ -173,16 +189,17 @@ class Streamer(object):
             search_query['query']['filtered']['filter']['bool']['must'][0]['term']['extractions.text.attribs.target'] = site_name
             search_query['query']['filtered']['query']['match']['extractions.text.results'] = keyword
             buckets = self.es.search(index='escorts', body=search_query)['hits']['hits']
-        except Exception as e:
+        except Exception as e: 
             raise Exception('site_name is incorrect')
 
         # load fetched data
         ans = []
         for bucket in buckets:
             try:
-                text = bucket['_source']['extractions']['text']['results']
-                if not isinstance(text, basestring):
-                    text = ' '.join(text)
+                # text = bucket['_source']['extractions']['text']['results']
+                text = json.dumps(bucket, sort_keys=True, indent=4)
+                # if not isinstance(text, basestring):
+                #     text = ' '.join(text)
             except Exception as e:
                 continue
             else:
@@ -203,24 +220,32 @@ class Streamer(object):
         # dedup
         dedup = {}
         for data in data_lines:
-            dedup[hash(data)] = data
+            data = json.loads(data)
+            content = data['_source']['extractions']['text']['results']
+            if not isinstance(content, basestring):
+                content = ' '.join(content)
+            dedup[hash(content)] = data
         data_lines = dedup.values()
 
         return data_lines
 
-    def generate(self, output_path=None, keywords=['massage','escort','street','st','avenue','rd','boulevard','parkway','pkwy'], num_data=200):
-        ans = {}
+    def generate(self, output_path=None, keywords=DC_STREAMER_DEFAULT_KEYWORDS, num_data=200):
+        ans = []
         sites = self.load_sites()
         for site_name in sites:
-            data = []
+            # data = []
             for keyword in keywords:
-                ans.setdefault(keyword, [])
-                ans[keyword] += self.load_data(site_name, keyword)
+                # ans.setdefault(keyword, [])
+                # ans[keyword] += self.load_data(site_name, keyword)
                 # data += self.load_data(site_name, keyword)
+                ans += self.load_data(site_name, keyword)
+                break
             # data = data[:num_data]
             # data = self.dedup_data(data)[:num_data]
             # ans += data
-        ans = {k:self.dedup_data(v) for (k, v) in ans.iteritems()}
+            break
+        ans = self.dedup_data(ans)
+        # ans = {k:self.dedup_data(v) for (k, v) in ans.iteritems()}
 
         if output_path:
             file_handler = open(output_path, 'wb')
@@ -242,6 +267,9 @@ if __name__ == '__main__':
 
     args = arg_parser.parse_args()
 
-    dg = DIGESDG(args.token)  
+    streamer = Streamer(args.token)
+
+    keywords = args.keywords if args.keywords else DC_STREAMER_DEFAULT_KEYWORDS
+    num_data = args.num_data if args.num_data else 10
        
-    print dg.generate(keywords=keywords, num_data=num_data, output_path=args.output_path)
+    streamer.generate(keywords=keywords, num_data=num_data, output_path=args.output_path)
