@@ -2,9 +2,10 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-11 14:28:13
+# @Last Modified time: 2016-08-11 15:00:30
 
 
+import re
 import os
 import csv
 import json
@@ -144,12 +145,11 @@ class Loader(object):
         if not dataset:
             return
         with open(path, 'w') as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=DC_NODE_FEATURES)
+            writer = csv.DictWriter(csvfile, fieldnames=[DC_NODE_EXT_FEATURE_NAME_CONTENT]+DC_NODE_EXT_FEATURES)
             writer.writeheader()
             for data in dataset:
-                print data
-                break
-                writer.writerow(data)
+                writer.writerow(dict({DC_NODE_EXT_FEATURE_NAME_CONTENT: ' '.join(data._content.split('\n'))}.items()+data._attrs.items()))
+                # break
 
     __loader_generate_data_funcs = {
         DC_DATA_FILE_FORMAT_JSONLINES: __generate_data_jsonlines,

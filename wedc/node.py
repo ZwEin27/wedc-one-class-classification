@@ -2,14 +2,14 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-11 14:28:50
+# @Last Modified time: 2016-08-11 14:58:58
 
 
 from vendor.crf_tokenizer import CrfTokenizer
 from common import cleaner
 from seed import seeds
 
-DC_NODE_EXT_FEATURE_NAME_CONTENT = 'raw_content'
+DC_NODE_EXT_FEATURE_NAME_CONTENT = 'extracted_text'    # extracted_text
 DC_NODE_EXT_FEATURE_NAME_POSTTIME = 'posttime'
 DC_NODE_EXT_FEATURE_NAME_CITY = 'city'
 DC_NODE_EXT_FEATURE_NAME_TEXT = 'text'
@@ -22,7 +22,7 @@ DC_NODE_EXT_FEATURE_NAME_OTHERADS = 'otherads'
 DC_NODE_EXT_FEATURE_NAME_AGE = 'age'
 DC_NODE_EXT_FEATURE_NAME_DOCID = 'doc_id'
 
-DC_NODE_FEATURES = [ 
+DC_NODE_EXT_FEATURES = [
     DC_NODE_EXT_FEATURE_NAME_POSTTIME,
     DC_NODE_EXT_FEATURE_NAME_CITY,
     DC_NODE_EXT_FEATURE_NAME_TEXT,
@@ -34,12 +34,14 @@ DC_NODE_FEATURES = [
     DC_NODE_EXT_FEATURE_NAME_OTHERADS,
     DC_NODE_EXT_FEATURE_NAME_AGE,
     DC_NODE_EXT_FEATURE_NAME_DOCID
-] + sorted(seeds)
+]
+
+DC_NODE_FEATURES = DC_NODE_EXT_FEATURES + sorted(seeds)
 
 class Node(object):
 
     def __init__(self, content, sid=None, label=None, **attrs):
-        self._content = content
+        self._content = content.encode('utf-8')
         self._sid = sid
         self._label = label
         self._seeds = seeds
@@ -126,6 +128,7 @@ class Node(object):
             if features[i] in self._features:
                 vector[i] = str(1.0 * float(self._features[features[i]]))
         return ' '.join(vector)
+
                
 
 
