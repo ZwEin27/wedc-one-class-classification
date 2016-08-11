@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-11 13:32:40
+# @Last Modified time: 2016-08-11 13:58:30
 
 
 from vendor.crf_tokenizer import CrfTokenizer
@@ -33,12 +33,13 @@ class Node(object):
         self._sid = sid
         self._label = label
         self._seeds = seeds
+        self._attrs = attrs
         self._features = self.load_features(content)
         self._vector = self.generate_vector()
 
-        self.attrs = sorted(attrs.keys())
-        for attr in attrs:
-            print attr, ':', attrs[attr]
+        print self._features        
+        # for attr in sorted(self.attrs.keys()):
+        #     print attr, ':', attrs[attr]
 
     #################################################
     # Clean Content 
@@ -88,10 +89,18 @@ class Node(object):
         return ans
 
     def load_ext_features(self, content):
+        if self._attrs:
+            # print self._attrs
+            ans = {}
+            for (attr_name, attr_value) in self._attrs.iteritems():
+                # print attr_value, attr_value
+                if attr_value and attr_value != '':
+                    ans.setdefault(attr_name, 1.)
+            return ans
         return {}
 
     def load_features(self, content):
-        return dict(self.load_seed_features(content).items() + self.load_ext_features(content).items())
+        return dict(self.load_ext_features(content).items() + self.load_seed_features(content).items())
 
     #################################################
     # Generate Vector

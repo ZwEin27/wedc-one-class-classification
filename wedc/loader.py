@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-11 13:41:40
+# @Last Modified time: 2016-08-11 13:55:52
 
 
 import os
@@ -85,7 +85,7 @@ class Loader(object):
                     age = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_AGE]['results'])
 
                 new_node = Node( \
-                    raw_content.decode('utf-8', 'ignore').encode('ascii', 'ignore'), \
+                    raw_content, \
                     doc_id=doc_id, \
                     posttime=posttime, \
                     city=city, \
@@ -99,6 +99,7 @@ class Loader(object):
                     age=age)
 
                 dataset.append(new_node)
+                break
         return dataset
 
     def __load_data_csv(path):
