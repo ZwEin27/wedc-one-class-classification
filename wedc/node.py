@@ -2,16 +2,12 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-11 14:03:28
+# @Last Modified time: 2016-08-11 14:28:50
 
 
 from vendor.crf_tokenizer import CrfTokenizer
 from common import cleaner
 from seed import seeds
-
-DC_NODE_FEATURES = [ 
-    'ext_url'
-] + sorted(seeds)
 
 DC_NODE_EXT_FEATURE_NAME_CONTENT = 'raw_content'
 DC_NODE_EXT_FEATURE_NAME_POSTTIME = 'posttime'
@@ -26,6 +22,20 @@ DC_NODE_EXT_FEATURE_NAME_OTHERADS = 'otherads'
 DC_NODE_EXT_FEATURE_NAME_AGE = 'age'
 DC_NODE_EXT_FEATURE_NAME_DOCID = 'doc_id'
 
+DC_NODE_FEATURES = [ 
+    DC_NODE_EXT_FEATURE_NAME_POSTTIME,
+    DC_NODE_EXT_FEATURE_NAME_CITY,
+    DC_NODE_EXT_FEATURE_NAME_TEXT,
+    DC_NODE_EXT_FEATURE_NAME_REGION,
+    DC_NODE_EXT_FEATURE_NAME_TITLE,
+    DC_NODE_EXT_FEATURE_NAME_USERLOCATION,
+    DC_NODE_EXT_FEATURE_NAME_PHONENUMBER,
+    DC_NODE_EXT_FEATURE_NAME_SID,
+    DC_NODE_EXT_FEATURE_NAME_OTHERADS,
+    DC_NODE_EXT_FEATURE_NAME_AGE,
+    DC_NODE_EXT_FEATURE_NAME_DOCID
+] + sorted(seeds)
+
 class Node(object):
 
     def __init__(self, content, sid=None, label=None, **attrs):
@@ -37,7 +47,7 @@ class Node(object):
         self._features = self.load_features(content)
         self._vector = self.generate_vector()
 
-        print self._features        
+        # print self._features        
         # for attr in sorted(self.attrs.keys()):
         #     print attr, ':', attrs[attr]
 
@@ -103,7 +113,7 @@ class Node(object):
         return dict(self.load_seed_features(content).items() + self.load_ext_features(content).items())
 
     #################################################
-    # Generate Vector
+    # Transformat
     #################################################
     
     def generate_vector(self):

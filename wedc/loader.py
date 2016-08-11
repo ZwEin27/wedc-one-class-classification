@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-11 14:19:49
+# @Last Modified time: 2016-08-11 14:28:13
 
 
 import os
@@ -141,7 +141,15 @@ class Loader(object):
         pass
 
     def __generate_data_csv(dataset, path):
-        print 's'
+        if not dataset:
+            return
+        with open(path, 'w') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=DC_NODE_FEATURES)
+            writer.writeheader()
+            for data in dataset:
+                print data
+                break
+                writer.writerow(data)
 
     __loader_generate_data_funcs = {
         DC_DATA_FILE_FORMAT_JSONLINES: __generate_data_jsonlines,
