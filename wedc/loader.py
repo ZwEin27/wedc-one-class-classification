@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-11 13:55:52
+# @Last Modified time: 2016-08-11 14:19:49
 
 
 import os
@@ -23,6 +23,8 @@ DC_DATA_FILE_FORMATS = [
 
 
 DC_DEFAULT_DIG_WEBPAGE_DATA_FILEPATH = os.path.join(os.path.dirname(__file__), 'res', 'webpages.json')
+
+DC_DEFAULT_UNLABELLED_DATA_FILEPATH = os.path.join(os.path.dirname(__file__), 'res', 'unlabelled_data.csv')
 DC_DEFAULT_TRAINING_DATA_FILEPATH = os.path.join(os.path.dirname(__file__), 'res', 'training_data.csv')
 DC_DEFAULT_TESTING_DATA_FILEPATH = os.path.join(os.path.dirname(__file__), 'res', 'testing_data.csv')
 
@@ -114,7 +116,7 @@ class Loader(object):
                 # break
         return dataset
 
-    __loader_data_funcs = {
+    __loader_load_data_funcs = {
         DC_DATA_FILE_FORMAT_JSONLINES: __load_data_jsonlines,
         DC_DATA_FILE_FORMAT_JSON: __load_data_json,
         DC_DATA_FILE_FORMAT_CSV: __load_data_csv
@@ -126,7 +128,30 @@ class Loader(object):
         basic interface to load data
         
         """
-        return Loader.__loader_data_funcs[format](path)
+        return Loader.__loader_load_data_funcs[format](path)
+
+    #################################################
+    # Generate Data Functions
+    #################################################
+    
+    def __generate_data_jsonlines(dataset, path):
+        pass
+
+    def __generate_data_json(dataset, path):
+        pass
+
+    def __generate_data_csv(dataset, path):
+        print 's'
+
+    __loader_generate_data_funcs = {
+        DC_DATA_FILE_FORMAT_JSONLINES: __generate_data_jsonlines,
+        DC_DATA_FILE_FORMAT_JSON: __generate_data_json,
+        DC_DATA_FILE_FORMAT_CSV: __generate_data_csv
+    }
+
+    @staticmethod
+    def generate_data(dataset, path, format=DC_DATA_FILE_FORMAT_JSONLINES):
+        Loader.__loader_generate_data_funcs[format](dataset, path)
 
     #################################################
     # Main Load Data Functions
@@ -141,8 +166,13 @@ class Loader(object):
         return Loader.load_data(filepath, format=DC_DATA_FILE_FORMAT_CSV)
 
     @staticmethod
-    def load_dig_data(filepath=DC_DEFAULT_DIG_WEBPAGE_DATA_FILEPATH):
-        return Loader.load_data(filepath, format=DC_DATA_FILE_FORMAT_JSON)
+    def load_dig_data(filepath=DC_DEFAULT_DIG_WEBPAGE_DATA_FILEPATH, \
+                    output_filepath=DC_DEFAULT_UNLABELLED_DATA_FILEPATH, \
+                    format=DC_DATA_FILE_FORMAT_CSV):
+        data = Loader.load_data(filepath, format=DC_DATA_FILE_FORMAT_JSON)
+        if output_filepath:
+            Loader.generate_data(data, output_filepath, format=format)
+        return data
 
     @staticmethod
     def load_vectors(nodes):

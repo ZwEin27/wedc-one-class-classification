@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-11 13:58:30
+# @Last Modified time: 2016-08-11 14:03:28
 
 
 from vendor.crf_tokenizer import CrfTokenizer
@@ -100,7 +100,7 @@ class Node(object):
         return {}
 
     def load_features(self, content):
-        return dict(self.load_ext_features(content).items() + self.load_seed_features(content).items())
+        return dict(self.load_seed_features(content).items() + self.load_ext_features(content).items())
 
     #################################################
     # Generate Vector
