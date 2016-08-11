@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-11 13:35:50
+# @Last Modified time: 2016-08-11 13:38:14
 
 
 import os
@@ -54,11 +54,13 @@ class Loader(object):
         for json_obj in json_objs:
             source = json_obj['_source']
 
+            doc_id = raw_content = posttime = city = text = region = title = userlocation = phonenumber = sid = otherads = age = None
+
             if DC_NODE_EXT_FEATURE_NAME_DOCID in source:
                 doc_id = source[DC_NODE_EXT_FEATURE_NAME_DOCID]
-            if raw_content in source:
+            if DC_NODE_EXT_FEATURE_NAME_CONTENT in source:
                 raw_content = source[DC_NODE_EXT_FEATURE_NAME_CONTENT]
-            if extractions in source:
+            if 'extractions' in source:
                 extractions = source['extractions']
 
                 if DC_NODE_EXT_FEATURE_NAME_POSTTIME in extractions:
@@ -81,6 +83,7 @@ class Loader(object):
                     otherads = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_OTHERADS]['results'])
                 if DC_NODE_EXT_FEATURE_NAME_AGE in extractions:
                     age = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_AGE]['results'])
+                
             
 
 
