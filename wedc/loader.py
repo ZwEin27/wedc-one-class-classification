@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-10 13:46:02
+# @Last Modified time: 2016-08-11 13:19:16
 
 
 import os
@@ -10,16 +10,18 @@ import csv
 import codecs
 from node import Node
 
-DC_DATA_FILE_FORMAT_JSONLINES = 'jsonline'
+DC_DATA_FILE_FORMAT_JSONLINES = 'jsonlines'
 DC_DATA_FILE_FORMAT_JSON = 'json'
 DC_DATA_FILE_FORMAT_CSV = 'csv'
 
 DC_DATA_FILE_FORMATS = [
+    DC_DATA_FILE_FORMAT_JSONLINES,
     DC_DATA_FILE_FORMAT_JSON,
     DC_DATA_FILE_FORMAT_CSV
 ]
 
 
+DC_DEFAULT_DIG_WEBPAGE_DATA_FILEPATH = os.path.join(os.path.dirname(__file__), 'res', 'webpages.json')
 DC_DEFAULT_TRAINING_DATA_FILEPATH = os.path.join(os.path.dirname(__file__), 'res', 'training_data.csv')
 DC_DEFAULT_TESTING_DATA_FILEPATH = os.path.join(os.path.dirname(__file__), 'res', 'testing_data.csv')
 
@@ -39,6 +41,9 @@ class Loader(object):
             dataset.append([line['sid'], line['content']])
         return dataset
 
+    def __load_data_json(path):
+        return []
+
     def __load_data_csv(path):
         import csv
         dataset = []
@@ -53,6 +58,7 @@ class Loader(object):
 
     __loader_data_funcs = {
         DC_DATA_FILE_FORMAT_JSONLINES: __load_data_jsonlines,
+        DC_DATA_FILE_FORMAT_JSON: __load_data_json,
         DC_DATA_FILE_FORMAT_CSV: __load_data_csv
     }
 
@@ -77,7 +83,7 @@ class Loader(object):
         return Loader.load_data(filepath, format=DC_DATA_FILE_FORMAT_CSV)
 
     @staticmethod
-    def load_dig_data(filepath):
+    def load_dig_data(filepath=DC_DEFAULT_DIG_WEBPAGE_DATA_FILEPATH):
         return Loader.load_data(filepath, format=DC_DATA_FILE_FORMAT_JSON)
 
     @staticmethod
@@ -91,7 +97,7 @@ class Loader(object):
 
 if __name__ == '__main__':
 
-    Loader.load_training_data()
+    # Loader.load_training_data()
     Loader.load_dig_data()
 
 

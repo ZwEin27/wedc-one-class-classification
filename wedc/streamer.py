@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-10 13:53:23
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-11 13:02:40
+# @Last Modified time: 2016-08-11 13:17:30
 
 
 import urllib3
@@ -239,11 +239,11 @@ class Streamer(object):
                 # ans[keyword] += self.load_data(site_name, keyword)
                 # data += self.load_data(site_name, keyword)
                 ans += self.load_data(site_name, keyword)
-                break
+                # break
             # data = data[:num_data]
             # data = self.dedup_data(data)[:num_data]
             # ans += data
-            break
+            # break
         ans = self.dedup_data(ans)
         # ans = {k:self.dedup_data(v) for (k, v) in ans.iteritems()}
 
