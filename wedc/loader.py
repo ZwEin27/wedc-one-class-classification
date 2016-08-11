@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-11 13:33:29
+# @Last Modified time: 2016-08-11 13:35:50
 
 
 import os
@@ -54,20 +54,33 @@ class Loader(object):
         for json_obj in json_objs:
             source = json_obj['_source']
 
-            doc_id = source[DC_NODE_EXT_FEATURE_NAME_DOCID]
-            raw_content = source[DC_NODE_EXT_FEATURE_NAME_CONTENT]
-            extractions = source['extractions']
+            if DC_NODE_EXT_FEATURE_NAME_DOCID in source:
+                doc_id = source[DC_NODE_EXT_FEATURE_NAME_DOCID]
+            if raw_content in source:
+                raw_content = source[DC_NODE_EXT_FEATURE_NAME_CONTENT]
+            if extractions in source:
+                extractions = source['extractions']
 
-            posttime = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_POSTTIME]['results'])
-            city = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_CITY]['results'])
-            text = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_TEXT]['results'])
-            region = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_REGION]['results'])
-            title = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_TITLE]['results'])
-            userlocation = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_USERLOCATION]['results'])
-            phonenumber = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_PHONENUMBER]['results'])
-            sid = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_SID]['results'])
-            otherads = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_OTHERADS]['results'])
-            age = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_AGE]['results'])
+                if DC_NODE_EXT_FEATURE_NAME_POSTTIME in extractions:
+                    posttime = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_POSTTIME]['results'])
+                if DC_NODE_EXT_FEATURE_NAME_CITY in extractions:
+                    city = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_CITY]['results'])
+                if DC_NODE_EXT_FEATURE_NAME_TEXT in extractions:
+                    text = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_TEXT]['results'])
+                if DC_NODE_EXT_FEATURE_NAME_REGION in extractions:
+                    region = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_REGION]['results'])
+                if DC_NODE_EXT_FEATURE_NAME_TITLE in extractions:
+                    title = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_TITLE]['results'])
+                if DC_NODE_EXT_FEATURE_NAME_USERLOCATION in extractions:
+                    userlocation = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_USERLOCATION]['results'])
+                if DC_NODE_EXT_FEATURE_NAME_PHONENUMBER in extractions:
+                    phonenumber = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_PHONENUMBER]['results'])
+                if DC_NODE_EXT_FEATURE_NAME_SID in extractions:
+                    sid = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_SID]['results'])
+                if DC_NODE_EXT_FEATURE_NAME_OTHERADS in extractions:
+                    otherads = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_OTHERADS]['results'])
+                if DC_NODE_EXT_FEATURE_NAME_AGE in extractions:
+                    age = es_content_loader(extractions[DC_NODE_EXT_FEATURE_NAME_AGE]['results'])
             
 
 
