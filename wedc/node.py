@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-10 11:57:06
+# @Last Modified time: 2016-08-11 13:25:05
 
 
 from vendor.crf_tokenizer import CrfTokenizer
@@ -12,6 +12,18 @@ from seed import seeds
 DC_NODE_FEATURES = [ 
     'ext_url'
 ] + sorted(seeds)
+
+DC_NODE_EXT_FEATURE_NAME_CONTENT = 'raw_content'
+DC_NODE_EXT_FEATURE_NAME_POSTTIME = 'posttime'
+DC_NODE_EXT_FEATURE_NAME_TEXT = 'text'
+DC_NODE_EXT_FEATURE_NAME_REGION = 'raw_content'
+DC_NODE_EXT_FEATURE_NAME_TITLE = 'title'
+DC_NODE_EXT_FEATURE_NAME_USERLOCATION = 'userlocation'
+DC_NODE_EXT_FEATURE_NAME_PHONENUMBER = 'phonenumber'
+DC_NODE_EXT_FEATURE_NAME_SID = 'sid'
+DC_NODE_EXT_FEATURE_NAME_OTHERADS = 'otherads'
+DC_NODE_EXT_FEATURE_NAME_age = 'AGE'
+DC_NODE_EXT_FEATURE_NAME_DOCID = 'doc_id'
 
 class Node(object):
 
