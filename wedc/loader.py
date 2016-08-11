@@ -2,11 +2,12 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-11 13:19:16
+# @Last Modified time: 2016-08-11 13:22:26
 
 
 import os
 import csv
+import json
 import codecs
 from node import Node
 
@@ -42,7 +43,14 @@ class Loader(object):
         return dataset
 
     def __load_data_json(path):
-        return []
+        dataset = []
+        json_objs = json.load(codecs.open(path, 'r', 'utf-8'))
+        for json_obj in json_objs:
+            
+            print json_obj
+
+
+        return dataset
 
     def __load_data_csv(path):
         import csv
