@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-14 15:30:19
+# @Last Modified time: 2016-08-14 15:46:07
 
 
 import re
@@ -25,8 +25,8 @@ DC_DATA_FILE_FORMATS = [
 
 DC_DEFAULT_DIG_WEBPAGE_DATA_FILEPATH = os.path.join(os.path.dirname(__file__), 'res', 'webpages.json')
 
-# DC_DEFAULT_UNLABELLED_DATA_FILEPATH = os.path.join(os.path.dirname(__file__), 'res', 'unlabelled_data.csv')
-# DC_DEFAULT_LABELLED_DATA_FILEPATH = os.path.join(os.path.dirname(__file__), 'res', 'labelled_data.csv')
+DC_DEFAULT_UNLABELLED_DATA_FILEPATH = os.path.join(os.path.dirname(__file__), 'res', 'unlabelled_data.csv')
+DC_DEFAULT_LABELLED_DATA_FILEPATH = os.path.join(os.path.dirname(__file__), 'res', 'labelled_data.csv')
 DC_DEFAULT_TRAINING_DATA_FILEPATH = os.path.join(os.path.dirname(__file__), 'res', 'training_data.csv')
 DC_DEFAULT_TESTING_DATA_FILEPATH = os.path.join(os.path.dirname(__file__), 'res', 'testing_data.csv')
 
@@ -113,8 +113,26 @@ class Loader(object):
         with open(path, 'rb') as csvfile:
         # with codecs.open(path, 'r', 'utf-8') as csvfile:
             reader = csv.reader(csvfile)
+            header = next(reader)
             for row in reader:
-                new_node = Node(row[1].decode('utf-8', 'ignore').encode('ascii', 'ignore'), label=row[0], hasPhone=True)
+                label =row[0]
+                content = row[1].decode('utf-8', 'ignore').encode('ascii', 'ignore')
+
+                new_node = Node( \
+                    content, \
+                    label=label, \
+                    doc_id=row[header.index(DC_NODE_EXT_FEATURE_NAME_DOCID)], \
+                    posttime=row[header.index(DC_NODE_EXT_FEATURE_NAME_POSTTIME)], \
+                    city=row[header.index(DC_NODE_EXT_FEATURE_NAME_CITY)], \
+                    text=row[header.index(DC_NODE_EXT_FEATURE_NAME_TEXT)], \
+                    region=row[header.index(DC_NODE_EXT_FEATURE_NAME_REGION)], \
+                    title=row[header.index(DC_NODE_EXT_FEATURE_NAME_TITLE)], \
+                    userlocation=row[header.index(DC_NODE_EXT_FEATURE_NAME_USERLOCATION)], \
+                    phonenumber=row[header.index(DC_NODE_EXT_FEATURE_NAME_PHONENUMBER)], \
+                    sid=row[header.index(DC_NODE_EXT_FEATURE_NAME_SID)], \
+                    otherads=row[header.index(DC_NODE_EXT_FEATURE_NAME_OTHERADS)], \
+                    age=row[header.index(DC_NODE_EXT_FEATURE_NAME_AGE)])
+
                 dataset.append(new_node)
                 # break
         return dataset
@@ -217,7 +235,7 @@ class Loader(object):
 if __name__ == '__main__':
 
     # Loader.load_training_data()
-    Loader.load_dig_data()
+    Loader.load_dig_data(filepath=DC_DEFAULT_DIG_WEBPAGE_DATA_FILEPATH, output_filepath=DC_DEFAULT_TRAINING_DATA_FILEPATH)
 
 
 

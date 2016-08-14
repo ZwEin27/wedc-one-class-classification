@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-09 11:36:55
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-09 20:53:14
+# @Last Modified time: 2016-08-14 15:43:59
 
 from loader import Loader
 
@@ -56,6 +56,10 @@ class Classifier(object):
             print '-'*40
             inner_data = Loader.load_vectors([_ for _ in self._training_data if _._label == cate_no])
             outer_data = Loader.load_vectors([_ for _ in self._training_data if _._label != cate_no])
+
+            if not inner_data:
+                continue
+
             # np.random.seed(random_seed)
             # np.random.shuffle(inner_data)
             split_point = int(len(inner_data)*train_test_split_rate)
