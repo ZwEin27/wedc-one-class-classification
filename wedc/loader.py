@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-14 15:54:59
+# @Last Modified time: 2016-08-14 16:09:59
 
 
 import re
@@ -174,13 +174,13 @@ class Loader(object):
                     content = data._content
                     if not content:
                         continue
-                    content = ' '.join(content.split('\n'))
+                    content = content.replace('\n', ' ').replace('\r', ' ')
                     # print '1111111111111111'
                     content = unicode(content, errors='ignore')
                     # print content#.decode('utf-8', 'ignore')
                     # print '2222222222222222'
                     # content = ''
-                    data = {k:v.encode('utf-8') for (k, v) in data._attrs.iteritems() if v}
+                    data = {k:' '.join(v.encode('utf-8').split('\n')) for (k, v) in data._attrs.iteritems() if v}
                     data.setdefault(DC_LABEL_NAME, -1)
                     data.setdefault(DC_NODE_EXT_FEATURE_NAME_CONTENT, content)
                     # print '3333333333333333'
