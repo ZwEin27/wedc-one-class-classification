@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-14 15:53:06
+# @Last Modified time: 2016-08-14 15:54:59
 
 
 import re
@@ -190,7 +190,7 @@ class Loader(object):
                 except Exception as e:
                     # print content
                     print e
-                    raise Exception('ss')
+                    raise Exception('error in __generate_data_csv')
                     
                 
                 # break
