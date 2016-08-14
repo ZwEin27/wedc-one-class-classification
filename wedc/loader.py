@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-14 15:46:07
+# @Last Modified time: 2016-08-14 15:53:06
 
 
 import re
@@ -11,6 +11,8 @@ import csv
 import json
 import codecs
 from node import *
+
+DC_LABEL_NAME = 'label'
 
 DC_DATA_FILE_FORMAT_JSONLINES = 'jsonlines'
 DC_DATA_FILE_FORMAT_JSON = 'json'
@@ -165,7 +167,7 @@ class Loader(object):
         if not dataset:
             return
         with open(path, 'w') as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=[DC_NODE_EXT_FEATURE_NAME_CONTENT]+DC_NODE_EXT_FEATURES)
+            writer = csv.DictWriter(csvfile, fieldnames=[DC_LABEL_NAME,DC_NODE_EXT_FEATURE_NAME_CONTENT]+DC_NODE_EXT_FEATURES)
             writer.writeheader()
             for data in dataset:
                 try:
@@ -179,6 +181,7 @@ class Loader(object):
                     # print '2222222222222222'
                     # content = ''
                     data = {k:v.encode('utf-8') for (k, v) in data._attrs.iteritems() if v}
+                    data.setdefault(DC_LABEL_NAME, -1)
                     data.setdefault(DC_NODE_EXT_FEATURE_NAME_CONTENT, content)
                     # print '3333333333333333'
                     # print '#'*100
