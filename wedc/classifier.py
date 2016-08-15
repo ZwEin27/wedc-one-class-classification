@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-09 11:36:55
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-14 15:55:44
+# @Last Modified time: 2016-08-15 12:51:01
 
 from loader import Loader
 
@@ -20,7 +20,6 @@ DC_CATEGORY_NO_MAPPING = {
 }
 
 class Classifier(object):
-
 
     def __init__(self, training_data_file_path=None, predicting_data_file_path=None):
         self._training_data_file_path = training_data_file_path

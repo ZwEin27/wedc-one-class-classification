@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-14 16:09:59
+# @Last Modified time: 2016-08-15 15:26:39
 
 
 import re
@@ -14,6 +14,7 @@ from node import *
 
 DC_LABEL_NAME = 'label'
 
+DC_DATA_FILE_FORMAT_SEQUENCE = 'sequence'
 DC_DATA_FILE_FORMAT_JSONLINES = 'jsonlines'
 DC_DATA_FILE_FORMAT_JSON = 'json'
 DC_DATA_FILE_FORMAT_CSV = 'csv'
@@ -24,9 +25,7 @@ DC_DATA_FILE_FORMATS = [
     DC_DATA_FILE_FORMAT_CSV
 ]
 
-
 DC_DEFAULT_DIG_WEBPAGE_DATA_FILEPATH = os.path.join(os.path.dirname(__file__), 'res', 'webpages.json')
-
 DC_DEFAULT_UNLABELLED_DATA_FILEPATH = os.path.join(os.path.dirname(__file__), 'res', 'unlabelled_data.csv')
 DC_DEFAULT_LABELLED_DATA_FILEPATH = os.path.join(os.path.dirname(__file__), 'res', 'labelled_data.csv')
 DC_DEFAULT_TRAINING_DATA_FILEPATH = os.path.join(os.path.dirname(__file__), 'res', 'training_data.csv')
@@ -38,6 +37,9 @@ class Loader(object):
     #################################################
     # Basic Load Data Functions
     #################################################
+
+    def __load_data_sequence(path):
+        pass
 
     def __load_data_jsonlines(path):
         # to be updated
@@ -140,6 +142,7 @@ class Loader(object):
         return dataset
 
     __loader_load_data_funcs = {
+        DC_DATA_FILE_FORMAT_SEQUENCE: __load_data_sequence,
         DC_DATA_FILE_FORMAT_JSONLINES: __load_data_jsonlines,
         DC_DATA_FILE_FORMAT_JSON: __load_data_json,
         DC_DATA_FILE_FORMAT_CSV: __load_data_csv
@@ -180,7 +183,7 @@ class Loader(object):
                     # print content#.decode('utf-8', 'ignore')
                     # print '2222222222222222'
                     # content = ''
-                    data = {k:' '.join(v.encode('utf-8').split('\n')) for (k, v) in data._attrs.iteritems() if v}
+                    data = {k:v.encode('utf-8').replace('\n', ' ').replace('\r', ' ') for (k, v) in data._attrs.iteritems() if v}
                     data.setdefault(DC_LABEL_NAME, -1)
                     data.setdefault(DC_NODE_EXT_FEATURE_NAME_CONTENT, content)
                     # print '3333333333333333'
@@ -227,6 +230,13 @@ class Loader(object):
         return data
 
     @staticmethod
+    def load_memex_data(filepath=DC_DEFAULT_DIG_WEBPAGE_DATA_FILEPATH, \
+                    output_filepath=DC_DEFAULT_TRAINING_DATA_FILEPATH, \
+                    format=DC_DATA_FILE_FORMAT_CSV):
+        data = Loader.load_data(filepath, format=DC_DATA_FILE_FORMAT_SEQUENCE)
+
+
+    @staticmethod
     def load_vectors(nodes):
         vectors = []
         for node in nodes:
@@ -238,7 +248,8 @@ class Loader(object):
 if __name__ == '__main__':
 
     # Loader.load_training_data()
-    Loader.load_dig_data(filepath=DC_DEFAULT_DIG_WEBPAGE_DATA_FILEPATH, output_filepath=DC_DEFAULT_TRAINING_DATA_FILEPATH)
+    # Loader.load_dig_data(filepath=DC_DEFAULT_DIG_WEBPAGE_DATA_FILEPATH, output_filepath=DC_DEFAULT_TRAINING_DATA_FILEPATH)
+    Loader.load_memex_data(filepath='/Volumes/Expansion/2016_memex/readability')
 
 
 
