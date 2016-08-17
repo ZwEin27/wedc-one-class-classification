@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-17 14:27:24
+# @Last Modified time: 2016-08-17 14:28:10
 
 
 from vendor.crf_tokenizer import CrfTokenizer
@@ -159,16 +159,7 @@ class Node(object):
             for (attr_name, attr_value) in self._attrs.iteritems():
                 # print attr_value, attr_value
                 if attr_value and attr_value != '':
-                    value = None
-                    try:
-                        json_obj = json.loads(attr_value)
-                        if json_obj:
-                            value = len(json_obj)
-                        else:
-                            value = 0.
-                    except:
-                        value = 1.
-                    ans.setdefault(attr_name, 1.)
+                    ans.setdefault(attr_name, attr_content_funcs[attr_name](attr_value))
             return ans
         return {}
 
