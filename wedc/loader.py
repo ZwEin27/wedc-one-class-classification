@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-15 15:26:39
+# @Last Modified time: 2016-08-15 16:11:45
 
 
 import re
@@ -39,7 +39,13 @@ class Loader(object):
     #################################################
 
     def __load_data_sequence(path):
-        pass
+        from pyspark import SparkContext, SparkConf, SparkFiles
+        from digSparkUtil.fileUtil import FileUtil
+        spark_config = SparkConf().setAppName('WEDC')
+        sc = SparkContext(conf=spark_config)
+        fUtil = FileUtil(sc)
+        rdd = fUtil.load_file(input, file_format='sequence', data_type='json')
+
 
     def __load_data_jsonlines(path):
         # to be updated
@@ -235,7 +241,6 @@ class Loader(object):
                     format=DC_DATA_FILE_FORMAT_CSV):
         data = Loader.load_data(filepath, format=DC_DATA_FILE_FORMAT_SEQUENCE)
 
-
     @staticmethod
     def load_vectors(nodes):
         vectors = []
@@ -244,12 +249,11 @@ class Loader(object):
             vectors.append(vector)
         return vectors
 
-
 if __name__ == '__main__':
 
     # Loader.load_training_data()
     # Loader.load_dig_data(filepath=DC_DEFAULT_DIG_WEBPAGE_DATA_FILEPATH, output_filepath=DC_DEFAULT_TRAINING_DATA_FILEPATH)
-    Loader.load_memex_data(filepath='/Volumes/Expansion/2016_memex/readability')
+    Loader.load_memex_data(filepath='/Volumes/Expansion/2016_memex/readability/part-00000')
 
 
 
