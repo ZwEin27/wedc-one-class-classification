@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-11 15:44:03
+# @Last Modified time: 2016-08-17 14:03:00
 
 
 from vendor.crf_tokenizer import CrfTokenizer
@@ -22,8 +22,28 @@ DC_NODE_EXT_FEATURE_NAME_OTHERADS = 'otherads'
 DC_NODE_EXT_FEATURE_NAME_AGE = 'age'
 DC_NODE_EXT_FEATURE_NAME_DOCID = 'doc_id'
 
+DC_NODE_EXT_FEATURE_NAME_EMAIL = 'email'
+DC_NODE_EXT_FEATURE_NAME_DRUG_USE = 'drug_use'
+DC_NODE_EXT_FEATURE_NAME_EMAIL = 'email'
+DC_NODE_EXT_FEATURE_NAME_EMAIL = 'email'
+DC_NODE_EXT_FEATURE_NAME_EMAIL = 'email'
+DC_NODE_EXT_FEATURE_NAME_EMAIL = 'email'
+DC_NODE_EXT_FEATURE_NAME_EMAIL = 'email'
+DC_NODE_EXT_FEATURE_NAME_EMAIL = 'email'
+
+location=location, \
+                email=email, \
+                drug_use=drug_use, \
+                price=price, \
+                price_per_hour=price_per_hour, \
+                business_type=business_type, \
+                url=url, \
+                services=services, \
+                gender=gender, \
+                phone=phone, \
+                age=age)
+
 DC_NODE_EXT_FEATURES = [
-    DC_NODE_EXT_FEATURE_NAME_POSTTIME,
     DC_NODE_EXT_FEATURE_NAME_CITY,
     DC_NODE_EXT_FEATURE_NAME_TEXT,
     DC_NODE_EXT_FEATURE_NAME_REGION,

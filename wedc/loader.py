@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-17 13:10:10
+# @Last Modified time: 2016-08-17 14:01:25
 
 
 import re
@@ -52,7 +52,55 @@ class Loader(object):
         dataset = []
         position = reader.getPosition()
         while reader.next(key, value):
-            ans.append(value.toString())
+            
+            json_obj = json.loads(value.toString()) 
+
+            description = title = readability_text = high_recall_readability_text = location = is_valid_extraction = email = drug_use = physical_address = review_id = timestamp = price = phone = services = price_per_hour = business_type = inferlink_text = hyperlink = url = gender = age = posting_date = doc_id = None
+
+            description = json_obj['description'] if 'description' in json_obj else None
+            title = json_obj['title'] if 'title' in json_obj else None
+            readability_text = json_obj['readability_text'] if 'readability_text' in json_obj else None
+            high_recall_readability_text = json_obj['high_recall_readability_text'] if 'high_recall_readability_text' in json_obj else None
+            location = json_obj['location'] if 'location' in json_obj else None
+            is_valid_extraction = json_obj['is_valid_extraction'] if 'is_valid_extraction' in json_obj else None
+            email = json_obj['email'] if 'email' in json_obj else None
+            drug_use = json_obj['drug_use'] if 'drug_use' in json_obj else None
+            physical_address = json_obj['physical_address'] if 'physical_address' in json_obj else None
+            review_id = json_obj['review_id'] if 'review_id' in json_obj else None
+            timestamp = json_obj['timestamp'] if 'timestamp' in json_obj else None
+            price = json_obj['price'] if 'price' in json_obj else None
+            phone = json_obj['phone'] if 'phone' in json_obj else None
+            services = json_obj['services'] if 'services' in json_obj else None
+            price_per_hour = json_obj['price_per_hour'] if 'price_per_hour' in json_obj else None
+            business_type = json_obj['business_type'] if 'business_type' in json_obj else None
+            inferlink_text = json_obj['inferlink_text'] if 'inferlink_text' in json_obj else None
+            hyperlink = json_obj['hyperlink'] if 'hyperlink' in json_obj else None
+            url = json_obj['url'] if 'url' in json_obj else None
+            gender = json_obj['gender'] if 'gender' in json_obj else None
+            age = json_obj['age'] if 'age' in json_obj else None
+            posting_date = json_obj['posting_date'] if 'posting_date' in json_obj else None
+            doc_id = json_obj['doc_id'] if 'doc_id' in json_obj else None
+            
+            node_text = readability_text if readability_text else ' '
+            node_text = node_text if isinstance(node_text, basestring) else ' '.join([_ for _ in node_text if _])
+
+            new_node = Node( \
+                node_text, \
+                location=location, \
+                email=email, \
+                drug_use=drug_use, \
+                price=price, \
+                price_per_hour=price_per_hour, \
+                business_type=business_type, \
+                url=url, \
+                services=services, \
+                gender=gender, \
+                phone=phone, \
+                age=age)
+
+            dataset.append(new_node)
+            break
+
         reader.close()
         return dataset
 
@@ -198,7 +246,7 @@ class Loader(object):
                     # print content#.decode('utf-8', 'ignore')
                     # print '2222222222222222'
                     # content = ''
-                    data = {k:v.encode('utf-8').replace('\n', ' ').replace('\r', ' ') for (k, v) in data._attrs.iteritems() if v}
+                    data = {k:str(v).encode('utf-8').replace('\n', ' ').replace('\r', ' ') for (k, v) in data._attrs.iteritems() if v}
                     data.setdefault(DC_LABEL_NAME, -1)
                     data.setdefault(DC_NODE_EXT_FEATURE_NAME_CONTENT, content)
                     # print '3333333333333333'
@@ -249,6 +297,9 @@ class Loader(object):
                     output_filepath=DC_DEFAULT_TRAINING_DATA_FILEPATH, \
                     format=DC_DATA_FILE_FORMAT_CSV):
         data = Loader.load_data(filepath, format=DC_DATA_FILE_FORMAT_SEQUENCE)
+        if output_filepath:
+            Loader.generate_data(data, output_filepath, format=format)
+        return data
 
     @staticmethod
     def load_vectors(nodes):
