@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-17 14:05:38
+# @Last Modified time: 2016-08-17 14:25:12
 
 
 from vendor.crf_tokenizer import CrfTokenizer
@@ -60,7 +60,8 @@ class Node(object):
         self._features = self.load_features(content)
         self._vector = self.generate_vector()
 
-        # print self._features        
+
+        print self._features        
         # for attr in sorted(self.attrs.keys()):
         #     print attr, ':', attrs[attr]
 
@@ -89,7 +90,6 @@ class Node(object):
         tokens = [_ for _ in set(tokens) if _]
 
         try:
-
             str(' '.join(tokens))
         except:
             print text.encode('utf-8')
@@ -116,12 +116,37 @@ class Node(object):
         return ans
 
     def load_ext_features(self, content):
+        
+
+        attr_content_funcs = [
+            location=location,
+            email=email,
+            drug_use=drug_use, 
+            price=price, 
+            price_per_hour=price_per_hour, 
+            business_type=business_type, 
+            url=url, 
+            services=services, 
+            gender=gender, 
+            phone=phone, 
+            age=age
+        ]
+
         if self._attrs:
             # print self._attrs
             ans = {}
             for (attr_name, attr_value) in self._attrs.iteritems():
                 # print attr_value, attr_value
                 if attr_value and attr_value != '':
+                    value = None
+                    try:
+                        json_obj = json.loads(attr_value)
+                        if json_obj:
+                            value = len(json_obj)
+                        else:
+                            value = 0.
+                    except:
+                        value = 1.
                     ans.setdefault(attr_name, 1.)
             return ans
         return {}
