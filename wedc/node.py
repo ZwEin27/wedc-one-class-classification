@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-17 14:58:12
+# @Last Modified time: 2016-08-17 15:06:35
 
 
 from vendor.crf_tokenizer import CrfTokenizer
@@ -151,7 +151,7 @@ class Node(object):
             return 0.
         def __ac_func_url(raw):
             if raw:
-                return len(raw)
+                return 1.
             return 0.
         def __ac_func_services(raw):
             if raw:
