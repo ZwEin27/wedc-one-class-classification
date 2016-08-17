@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-17 14:01:25
+# @Last Modified time: 2016-08-17 14:09:57
 
 
 import re
@@ -188,16 +188,16 @@ class Loader(object):
                 new_node = Node( \
                     content, \
                     label=label, \
-                    doc_id=row[header.index(DC_NODE_EXT_FEATURE_NAME_DOCID)], \
-                    posttime=row[header.index(DC_NODE_EXT_FEATURE_NAME_POSTTIME)], \
-                    city=row[header.index(DC_NODE_EXT_FEATURE_NAME_CITY)], \
-                    text=row[header.index(DC_NODE_EXT_FEATURE_NAME_TEXT)], \
-                    region=row[header.index(DC_NODE_EXT_FEATURE_NAME_REGION)], \
-                    title=row[header.index(DC_NODE_EXT_FEATURE_NAME_TITLE)], \
-                    userlocation=row[header.index(DC_NODE_EXT_FEATURE_NAME_USERLOCATION)], \
-                    phonenumber=row[header.index(DC_NODE_EXT_FEATURE_NAME_PHONENUMBER)], \
-                    sid=row[header.index(DC_NODE_EXT_FEATURE_NAME_SID)], \
-                    otherads=row[header.index(DC_NODE_EXT_FEATURE_NAME_OTHERADS)], \
+                    location=row[header.index(DC_NODE_EXT_FEATURE_NAME_LOCATION)], \
+                    email=row[header.index(DC_NODE_EXT_FEATURE_NAME_EMAIL)], \
+                    drug_use=row[header.index(DC_NODE_EXT_FEATURE_NAME_DRUG_USE)], \
+                    price=row[header.index(DC_NODE_EXT_FEATURE_NAME_PRICE)], \
+                    price_per_hour=row[header.index(DC_NODE_EXT_FEATURE_NAME_PRICE_PER_HOUR)], \
+                    business_type=row[header.index(DC_NODE_EXT_FEATURE_NAME_BUSINESS_TYPE)], \
+                    url=row[header.index(DC_NODE_EXT_FEATURE_NAME_URL)], \
+                    services=row[header.index(DC_NODE_EXT_FEATURE_NAME_SERVICES)], \
+                    gender=row[header.index(DC_NODE_EXT_FEATURE_NAME_GENDER)], \
+                    phone=row[header.index(DC_NODE_EXT_FEATURE_NAME_PHONE)], \
                     age=row[header.index(DC_NODE_EXT_FEATURE_NAME_AGE)])
 
                 dataset.append(new_node)

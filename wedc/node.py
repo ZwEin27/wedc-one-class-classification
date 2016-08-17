@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-17 14:03:00
+# @Last Modified time: 2016-08-17 14:05:38
 
 
 from vendor.crf_tokenizer import CrfTokenizer
@@ -24,36 +24,27 @@ DC_NODE_EXT_FEATURE_NAME_DOCID = 'doc_id'
 
 DC_NODE_EXT_FEATURE_NAME_EMAIL = 'email'
 DC_NODE_EXT_FEATURE_NAME_DRUG_USE = 'drug_use'
-DC_NODE_EXT_FEATURE_NAME_EMAIL = 'email'
-DC_NODE_EXT_FEATURE_NAME_EMAIL = 'email'
-DC_NODE_EXT_FEATURE_NAME_EMAIL = 'email'
-DC_NODE_EXT_FEATURE_NAME_EMAIL = 'email'
-DC_NODE_EXT_FEATURE_NAME_EMAIL = 'email'
-DC_NODE_EXT_FEATURE_NAME_EMAIL = 'email'
-
-location=location, \
-                email=email, \
-                drug_use=drug_use, \
-                price=price, \
-                price_per_hour=price_per_hour, \
-                business_type=business_type, \
-                url=url, \
-                services=services, \
-                gender=gender, \
-                phone=phone, \
-                age=age)
+DC_NODE_EXT_FEATURE_NAME_PRICE = 'price'
+DC_NODE_EXT_FEATURE_NAME_LOCATION = 'location'
+DC_NODE_EXT_FEATURE_NAME_PRICE_PER_HOUR = 'price_per_hour'
+DC_NODE_EXT_FEATURE_NAME_BUSINESS_TYPE = 'business_type'
+DC_NODE_EXT_FEATURE_NAME_URL = 'url'
+DC_NODE_EXT_FEATURE_NAME_SERVICES = 'services'
+DC_NODE_EXT_FEATURE_NAME_GENDER = 'gender'
+DC_NODE_EXT_FEATURE_NAME_PHONE = 'phone'
 
 DC_NODE_EXT_FEATURES = [
-    DC_NODE_EXT_FEATURE_NAME_CITY,
-    DC_NODE_EXT_FEATURE_NAME_TEXT,
-    DC_NODE_EXT_FEATURE_NAME_REGION,
-    DC_NODE_EXT_FEATURE_NAME_TITLE,
-    DC_NODE_EXT_FEATURE_NAME_USERLOCATION,
-    DC_NODE_EXT_FEATURE_NAME_PHONENUMBER,
-    DC_NODE_EXT_FEATURE_NAME_SID,
-    DC_NODE_EXT_FEATURE_NAME_OTHERADS,
-    DC_NODE_EXT_FEATURE_NAME_AGE,
-    DC_NODE_EXT_FEATURE_NAME_DOCID
+    DC_NODE_EXT_FEATURE_NAME_EMAIL,
+    DC_NODE_EXT_FEATURE_NAME_DRUG_USE,
+    DC_NODE_EXT_FEATURE_NAME_PRICE,
+    DC_NODE_EXT_FEATURE_NAME_LOCATION,
+    DC_NODE_EXT_FEATURE_NAME_PRICE_PER_HOUR,
+    DC_NODE_EXT_FEATURE_NAME_BUSINESS_TYPE,
+    DC_NODE_EXT_FEATURE_NAME_URL,
+    DC_NODE_EXT_FEATURE_NAME_SERVICES,
+    DC_NODE_EXT_FEATURE_NAME_GENDER,
+    DC_NODE_EXT_FEATURE_NAME_PHONE,
+    DC_NODE_EXT_FEATURE_NAME_AGE
 ]
 
 DC_NODE_FEATURES = DC_NODE_EXT_FEATURES + sorted(seeds)
