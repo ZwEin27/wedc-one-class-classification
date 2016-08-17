@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-17 14:25:12
+# @Last Modified time: 2016-08-17 14:27:24
 
 
 from vendor.crf_tokenizer import CrfTokenizer
@@ -116,20 +116,41 @@ class Node(object):
         return ans
 
     def load_ext_features(self, content):
-        
+        def __ac_func_location(raw):
+            pass
+        def __ac_func_email(raw):
+            pass
+        def __ac_func_drug_use(raw):
+            pass
+        def __ac_func_price(raw):
+            pass
+        def __ac_func_price_per_hour(raw):
+            pass
+        def __ac_func_business_type(raw):
+            pass
+        def __ac_func_url(raw):
+            pass
+        def __ac_func_services(raw):
+            pass
+        def __ac_func_gender(raw):
+            pass
+        def __ac_func_phone(raw):
+            pass
+        def __ac_func_age(raw):
+            pass
 
         attr_content_funcs = [
-            location=location,
-            email=email,
-            drug_use=drug_use, 
-            price=price, 
-            price_per_hour=price_per_hour, 
-            business_type=business_type, 
-            url=url, 
-            services=services, 
-            gender=gender, 
-            phone=phone, 
-            age=age
+            location=__ac_func_location,
+            email=__ac_func_email,
+            drug_use=__ac_func_drug_use, 
+            price=__ac_func_price, 
+            price_per_hour=__ac_func_price_per_hour, 
+            business_type=__ac_func_business_type, 
+            url=__ac_func_url, 
+            services=__ac_func_services, 
+            gender=__ac_func_gender, 
+            phone=__ac_func_phone, 
+            age=__ac_func_age
         ]
 
         if self._attrs:
