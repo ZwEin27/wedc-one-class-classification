@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-17 14:28:10
+# @Last Modified time: 2016-08-17 14:58:12
 
 
 from vendor.crf_tokenizer import CrfTokenizer
@@ -116,42 +116,75 @@ class Node(object):
         return ans
 
     def load_ext_features(self, content):
-        def __ac_func_location(raw):
-            pass
-        def __ac_func_email(raw):
-            pass
-        def __ac_func_drug_use(raw):
-            pass
-        def __ac_func_price(raw):
-            pass
-        def __ac_func_price_per_hour(raw):
-            pass
-        def __ac_func_business_type(raw):
-            pass
-        def __ac_func_url(raw):
-            pass
-        def __ac_func_services(raw):
-            pass
-        def __ac_func_gender(raw):
-            pass
-        def __ac_func_phone(raw):
-            pass
-        def __ac_func_age(raw):
-            pass
+        def raw2json(raw):
+            import ast
+            if not raw:
+                return []
+            try:
+                return ast.literal_eval(raw)
+            except:
+                return raw
 
-        attr_content_funcs = [
-            location=__ac_func_location,
-            email=__ac_func_email,
-            drug_use=__ac_func_drug_use, 
-            price=__ac_func_price, 
-            price_per_hour=__ac_func_price_per_hour, 
-            business_type=__ac_func_business_type, 
-            url=__ac_func_url, 
-            services=__ac_func_services, 
-            gender=__ac_func_gender, 
-            phone=__ac_func_phone, 
-            age=__ac_func_age
-        ]
+        def __ac_func_location(raw):
+            if raw:
+                return 1.
+            return 0.
+        def __ac_func_email(raw):
+            if raw:
+                return len(raw)
+            return 0.
+        def __ac_func_drug_use(raw):
+            if raw:
+                return 1.
+            return 0.
+        def __ac_func_price(raw):
+            if raw:
+                return len(raw)
+            return 0.
+        def __ac_func_price_per_hour(raw):
+            if raw:
+                return len(raw)
+            return 0.
+        def __ac_func_business_type(raw):
+            if raw:
+                return len(raw)
+            return 0.
+        def __ac_func_url(raw):
+            if raw:
+                return len(raw)
+            return 0.
+        def __ac_func_services(raw):
+            if raw:
+                return len(raw)
+            return 0.
+        def __ac_func_gender(raw):
+            if raw:
+                for content in raw:
+                    if content == 'female':
+                        return 1.
+            return 0.
+        def __ac_func_phone(raw):
+            if raw:
+                return len(raw)
+            return 0.
+        def __ac_func_age(raw):
+            if raw:
+                return len(raw)
+            return 0.
+
+        attr_content_funcs = {
+            'location': __ac_func_location,
+            'email': __ac_func_email,
+            'drug_use': __ac_func_drug_use, 
+            'price': __ac_func_price, 
+            'price_per_hour': __ac_func_price_per_hour, 
+            'business_type': __ac_func_business_type, 
+            'url': __ac_func_url, 
+            'services': __ac_func_services, 
+            'gender': __ac_func_gender, 
+            'phone': __ac_func_phone, 
+            'age': __ac_func_age
+        }
 
         if self._attrs:
             # print self._attrs
@@ -159,7 +192,7 @@ class Node(object):
             for (attr_name, attr_value) in self._attrs.iteritems():
                 # print attr_value, attr_value
                 if attr_value and attr_value != '':
-                    ans.setdefault(attr_name, attr_content_funcs[attr_name](attr_value))
+                    ans.setdefault(attr_name, attr_content_funcs[attr_name](raw2json(attr_value)))
             return ans
         return {}
 

@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-17 14:09:57
+# @Last Modified time: 2016-08-17 14:54:41
 
 
 import re
@@ -246,6 +246,7 @@ class Loader(object):
                     # print content#.decode('utf-8', 'ignore')
                     # print '2222222222222222'
                     # content = ''
+                    
                     data = {k:str(v).encode('utf-8').replace('\n', ' ').replace('\r', ' ') for (k, v) in data._attrs.iteritems() if v}
                     data.setdefault(DC_LABEL_NAME, -1)
                     data.setdefault(DC_NODE_EXT_FEATURE_NAME_CONTENT, content)
