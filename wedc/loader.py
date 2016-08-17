@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-17 13:07:13
+# @Last Modified time: 2016-08-17 13:10:10
 
 
 import re
@@ -39,12 +39,6 @@ class Loader(object):
     #################################################
 
     def __load_data_sequence(path):
-        # from pyspark import SparkContext, SparkConf, SparkFiles
-        # from digSparkUtil.fileUtil import FileUtil
-        # spark_config = SparkConf().setAppName('WEDC')
-        # sc = SparkContext(conf=spark_config)
-        # fUtil = FileUtil(sc)
-        # rdd = fUtil.load_file(path, file_format='sequence', data_type='json')
         from hadoop.io import SequenceFile
         reader = SequenceFile.Reader(path)
 
@@ -55,14 +49,12 @@ class Loader(object):
         value = value_class()
 
         #reader.sync(4042)
+        dataset = []
         position = reader.getPosition()
         while reader.next(key, value):
-            print '*' if reader.syncSeen() else ' ',
-            print '[%6s] %6s %6s' % (position, key.toString(), value.toString())
-            position = reader.getPosition()
-            break
-
+            ans.append(value.toString())
         reader.close()
+        return dataset
 
     def __load_data_jsonlines(path):
         # to be updated
