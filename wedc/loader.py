@@ -2,15 +2,19 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-17 14:54:41
+# @Last Modified time: 2016-08-18 15:53:26
 
 
 import re
 import os
 import csv
 import json
+import yaml
 import codecs
 from node import *
+
+punctuation = "!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~"
+re_unicode_symbol = re.compile(u'[^a-zA-Z0-9]'+punctuation)
 
 DC_LABEL_NAME = 'label'
 
@@ -51,8 +55,13 @@ class Loader(object):
         #reader.sync(4042)
         dataset = []
         position = reader.getPosition()
+
+        tid = 0
         while reader.next(key, value):
-            
+            tid += 1
+            if tid == 130:
+                break
+            # json_obj = yaml.safe_load(value.toString())
             json_obj = json.loads(value.toString()) 
 
             description = title = readability_text = high_recall_readability_text = location = is_valid_extraction = email = drug_use = physical_address = review_id = timestamp = price = phone = services = price_per_hour = business_type = inferlink_text = hyperlink = url = gender = age = posting_date = doc_id = None
@@ -65,7 +74,7 @@ class Loader(object):
             is_valid_extraction = json_obj['is_valid_extraction'] if 'is_valid_extraction' in json_obj else None
             email = json_obj['email'] if 'email' in json_obj else None
             drug_use = json_obj['drug_use'] if 'drug_use' in json_obj else None
-            physical_address = json_obj['physical_address'] if 'physical_address' in json_obj else None
+            physical_address = json_obj['location'] if 'location' in json_obj else None
             review_id = json_obj['review_id'] if 'review_id' in json_obj else None
             timestamp = json_obj['timestamp'] if 'timestamp' in json_obj else None
             price = json_obj['price'] if 'price' in json_obj else None
@@ -82,7 +91,11 @@ class Loader(object):
             doc_id = json_obj['doc_id'] if 'doc_id' in json_obj else None
             
             node_text = readability_text if readability_text else ' '
-            node_text = node_text if isinstance(node_text, basestring) else ' '.join([_ for _ in node_text if _])
+            if not isinstance(node_text, basestring):
+                try:
+                    node_text = ' '.join([_ for _ in node_text if _ and isinstance(_, basestring)])
+                except:
+                    node_text = str(node_text)
 
             new_node = Node( \
                 node_text, \
@@ -99,7 +112,7 @@ class Loader(object):
                 age=age)
 
             dataset.append(new_node)
-            break
+            # break
 
         reader.close()
         return dataset
@@ -175,6 +188,20 @@ class Loader(object):
         return dataset
 
     def __load_data_csv(path):
+
+        def load_unicode_symbol(content):
+            try:
+                content.encode('utf-8')
+            except:
+                return 1.
+            else:
+                return 0.
+            # ans = re_unicode_symbol.findall(content)
+            # print ans
+            # if ans:
+            #     return float(len(ans))
+            # return 0.
+
         import csv
         dataset = []
         with open(path, 'rb') as csvfile:
@@ -183,11 +210,13 @@ class Loader(object):
             header = next(reader)
             for row in reader:
                 label =row[0]
+
                 content = row[1].decode('utf-8', 'ignore').encode('ascii', 'ignore')
 
                 new_node = Node( \
                     content, \
                     label=label, \
+                    special_symbol=load_unicode_symbol(row[1]), \
                     location=row[header.index(DC_NODE_EXT_FEATURE_NAME_LOCATION)], \
                     email=row[header.index(DC_NODE_EXT_FEATURE_NAME_EMAIL)], \
                     drug_use=row[header.index(DC_NODE_EXT_FEATURE_NAME_DRUG_USE)], \
@@ -247,11 +276,29 @@ class Loader(object):
                     # print '2222222222222222'
                     # content = ''
                     
-                    data = {k:str(v).encode('utf-8').replace('\n', ' ').replace('\r', ' ') for (k, v) in data._attrs.iteritems() if v}
+                    refined_data = {}
+                    for (k, v) in data._attrs.iteritems():
+                        if v:
+                            if not isinstance(v, basestring):
+                                if isinstance(v, dict):
+                                    # print 'dict:', v
+                                    v = str(v)
+                                elif isinstance(v, list):
+                                    v = str(v)#.encode('utf-8', 'ignore') #' '.join(v)
+                                    # print 'list:', v
+                                else:
+                                    pass
+                                    # print 'other'
+                            v = v.encode('utf-8', 'ignore')
+                            refined_data.setdefault(k, v)
+                    data = refined_data
+                    # data = {k:str(v).replace('\n', ' ').replace('\r', ' ') for (k, v) in data._attrs.iteritems() if v}
+                    # print 'sss'
                     data.setdefault(DC_LABEL_NAME, -1)
                     data.setdefault(DC_NODE_EXT_FEATURE_NAME_CONTENT, content)
                     # print '3333333333333333'
                     # print '#'*100
+                    # print data
                     writer.writerow(data)
                     # print '4444444444444444'
                 except Exception as e:

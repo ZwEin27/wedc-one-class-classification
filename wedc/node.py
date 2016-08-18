@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-17 15:06:35
+# @Last Modified time: 2016-08-17 15:39:32
 
 
 from vendor.crf_tokenizer import CrfTokenizer
@@ -61,7 +61,7 @@ class Node(object):
         self._vector = self.generate_vector()
 
 
-        print self._features        
+        # print self._features        
         # for attr in sorted(self.attrs.keys()):
         #     print attr, ':', attrs[attr]
 
@@ -131,7 +131,7 @@ class Node(object):
             return 0.
         def __ac_func_email(raw):
             if raw:
-                return len(raw)
+                return float(len(raw))
             return 0.
         def __ac_func_drug_use(raw):
             if raw:
@@ -139,15 +139,15 @@ class Node(object):
             return 0.
         def __ac_func_price(raw):
             if raw:
-                return len(raw)
+                return float(len(raw))
             return 0.
         def __ac_func_price_per_hour(raw):
             if raw:
-                return len(raw)
+                return float(len(raw))
             return 0.
         def __ac_func_business_type(raw):
             if raw:
-                return len(raw)
+                return float(len(raw))
             return 0.
         def __ac_func_url(raw):
             if raw:
@@ -155,21 +155,21 @@ class Node(object):
             return 0.
         def __ac_func_services(raw):
             if raw:
-                return len(raw)
+                return float(len(raw))
             return 0.
         def __ac_func_gender(raw):
             if raw:
-                for content in raw:
-                    if content == 'female':
+                for val in raw:
+                    if val == 'female':
                         return 1.
             return 0.
         def __ac_func_phone(raw):
             if raw:
-                return len(raw)
+                return float(len(raw))
             return 0.
         def __ac_func_age(raw):
             if raw:
-                return len(raw)
+                return float(len(raw))
             return 0.
 
         attr_content_funcs = {
@@ -183,7 +183,8 @@ class Node(object):
             'services': __ac_func_services, 
             'gender': __ac_func_gender, 
             'phone': __ac_func_phone, 
-            'age': __ac_func_age
+            'age': __ac_func_age,
+            'special_symbol': lambda x: x
         }
 
         if self._attrs:
@@ -193,6 +194,7 @@ class Node(object):
                 # print attr_value, attr_value
                 if attr_value and attr_value != '':
                     ans.setdefault(attr_name, attr_content_funcs[attr_name](raw2json(attr_value)))
+            # ans.setdefault('unicode_symbol', load_unicode_symbol(content))
             return ans
         return {}
 
