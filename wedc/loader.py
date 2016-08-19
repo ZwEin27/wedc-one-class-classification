@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-18 15:53:26
+# @Last Modified time: 2016-08-18 15:54:25
 
 
 import re
@@ -59,7 +59,7 @@ class Loader(object):
         tid = 0
         while reader.next(key, value):
             tid += 1
-            if tid == 130:
+            if tid == 100:
                 break
             # json_obj = yaml.safe_load(value.toString())
             json_obj = json.loads(value.toString()) 
