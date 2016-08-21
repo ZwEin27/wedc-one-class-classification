@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-09 11:36:55
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-17 15:37:23
+# @Last Modified time: 2016-08-20 22:47:26
 
 from loader import Loader
 
@@ -12,7 +12,7 @@ from sklearn import svm
 DC_CATEGORY_NAME_MASSAGE = 'massage'
 DC_CATEGORY_NAME_ESCORT = 'escort'
 DC_CATEGORY_NAME_JOB_ADS = 'job_ads'
-
+ 
 DC_CATEGORY_NO_MAPPING = {
     DC_CATEGORY_NAME_MASSAGE: '2',
     DC_CATEGORY_NAME_ESCORT: '3',
@@ -90,9 +90,16 @@ class Classifier(object):
             n_error_test = y_pred_test[y_pred_test == -1].size
             n_error_outliers = y_pred_outliers[y_pred_outliers == 1].size
 
+            n_true_train = y_pred_train[y_pred_train == 1].size
+            n_true_test = y_pred_test[y_pred_test == 1].size
+            n_true_outliers = y_pred_outliers[y_pred_outliers == -1].size
+
             print 'error_train:', str(n_error_train)+'/'+str(len(train_data)), \
                 ', error_test:', str(n_error_test)+'/'+str(len(test_data)), \
                 ', error_outlier:', str(n_error_outliers)+'/'+str(len(outlier_data))
+
+            print 'precision:', str(n_true_test)+'/'+str(n_true_test+n_error_outliers)
+            print 'recall:', str(n_true_test)+'/'+str(len(test_data))
 
             print '\n\n\n'
 
