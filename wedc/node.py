@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-17 15:39:32
+# @Last Modified time: 2016-08-22 13:27:50
 
 
 from vendor.crf_tokenizer import CrfTokenizer
@@ -48,7 +48,7 @@ DC_NODE_EXT_FEATURES = [
 ]
 
 DC_NODE_FEATURES = DC_NODE_EXT_FEATURES + sorted(seeds)
-
+# print DC_NODE_FEATURES
 class Node(object):
 
     def __init__(self, content, sid=None, label=None, **attrs):
@@ -143,6 +143,7 @@ class Node(object):
             return 0.
         def __ac_func_price_per_hour(raw):
             if raw:
+                # print raw
                 return float(len(raw))
             return 0.
         def __ac_func_business_type(raw):
