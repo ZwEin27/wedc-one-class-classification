@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-11 14:17:25
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-14 15:31:46
+# @Last Modified time: 2016-08-21 20:54:17
 
 DC_LABEL_NAME = 'label'
 
@@ -11,14 +11,14 @@ class Labeller(object):
     @staticmethod
     def label(data_path):
         reader = csv.reader(codecs.open(data_path, 'r'))
-        # print reader.fieldnames
+
         header = next(reader)
         dataset = []
         for row in reader:
             os.system('cls' if os.name == 'nt' else 'clear')
             data = {}
             if int(row[0]) == -1:
-                # print info
+
                 print '#'*50
                 print '# Post Features'
                 print '#'*50
