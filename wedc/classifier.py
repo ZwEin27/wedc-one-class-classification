@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-09 11:36:55
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-22 13:46:08
+# @Last Modified time: 2016-08-22 13:47:10
 
 from loader import Loader
 
@@ -100,8 +100,8 @@ class Classifier(object):
             n_true_test = y_pred_test[y_pred_test == 1].size
             n_true_outliers = y_pred_outliers[y_pred_outliers == -1].size
 
-            print [inner_data_index[split_point:][_] for _ in [i for i in range(len(y_pred_test)) if y_pred_test[i] == -1]]
-            print [outer_data_index[_] for _ in [i for i in range(len(y_pred_outliers)) if y_pred_outliers[i] == -1]]
+            print 'error_test index', [inner_data_index[split_point:][_] for _ in [i for i in range(len(y_pred_test)) if y_pred_test[i] == -1]]
+            print 'error_outlier index', [outer_data_index[_] for _ in [i for i in range(len(y_pred_outliers)) if y_pred_outliers[i] == -1]]
 
             print 'error_train:', str(n_error_train)+'/'+str(len(train_data)), \
                 ', error_test:', str(n_error_test)+'/'+str(len(test_data)), \
