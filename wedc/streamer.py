@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-10 13:53:23
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-11 15:01:21
+# @Last Modified time: 2016-08-25 16:19:40
 
 
 import urllib3
@@ -21,59 +21,66 @@ urllib3.disable_warnings()
 ######################################################################
 
 DC_STREAMER_DEFAULT_KEYWORDS = [
-    'click',
-    'tel',
-    'sorry',
-    'call',
-    'incall',
-    'outcall',
-    'hh',
-    'hr',
-    'quick',
-    'quickie',
-    'hott',
-    'legged',
-    'busty',
-    'male',
-    'playboy',
-    'gigolo',
-    'handsome',
-    'hunk',
-    'ts',
-    'tv',
-    'transvestite',
-    'tranny',
-    'tgirl',
-    'shemale',
-    'she-male',
-    'transsexual',
-    'transexual',
-    'ladyboy',
-    'employee',
-    'manager',
-    'OSHA',
-    'license',
-    'business',
-    'technician',
-    'certified',
-    'degree',
-    'salary',
-    'retail',
-    '401k',
-    'insurance',
-    'spa',
-    'table',
-    'shower',
-    'nuru',
-    'slide',
-    'therapy',
-    'therapist',
-    'bodyrub',
-    'sauna',
-    'gel',
-    'shiatsu',
-    'jacuzzi'
+    'massage'
 ]
+
+
+
+
+# DC_STREAMER_DEFAULT_KEYWORDS = [
+#     'click',
+#     'tel',
+#     'sorry',
+#     'call',
+#     'incall',
+#     'outcall',
+#     'hh',
+#     'hr',
+#     'quick',
+#     'quickie',
+#     'hott',
+#     'legged',
+#     'busty',
+#     'male',
+#     'playboy',
+#     'gigolo',
+#     'handsome',
+#     'hunk',
+#     'ts',
+#     'tv',
+#     'transvestite',
+#     'tranny',
+#     'tgirl',
+#     'shemale',
+#     'she-male',
+#     'transsexual',
+#     'transexual',
+#     'ladyboy',
+#     'employee',
+#     'manager',
+#     'OSHA',
+#     'license',
+#     'business',
+#     'technician',
+#     'certified',
+#     'degree',
+#     'salary',
+#     'retail',
+#     '401k',
+#     'insurance',
+#     'spa',
+#     'table',
+#     'shower',
+#     'nuru',
+#     'slide',
+#     'therapy',
+#     'therapist',
+#     'bodyrub',
+#     'sauna',
+#     'gel',
+#     'shiatsu',
+#     'jacuzzi'
+# ]
 
 ######################################################################
 #   Regular Expression
@@ -190,6 +197,7 @@ class Streamer(object):
             search_query['query']['filtered']['query']['match']['extractions.text.results'] = keyword
             buckets = self.es.search(index='escorts', body=search_query)['hits']['hits']
         except Exception as e: 
+            return []
             raise Exception('site_name is incorrect')
 
         # load fetched data
@@ -252,7 +260,7 @@ class Streamer(object):
             file_handler.write(json.dumps(ans, sort_keys=True, indent=4))
             file_handler.close()
 
-        return ans
+        return ans[0]
 
 
 if __name__ == '__main__':
