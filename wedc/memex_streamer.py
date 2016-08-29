@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-10 13:53:23
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-29 14:49:24
+# @Last Modified time: 2016-08-29 15:06:41
 
 
 import urllib3
@@ -20,67 +20,74 @@ urllib3.disable_warnings()
 #   Constant
 ######################################################################
 
-DC_STREAMER_DEFAULT_KEYWORDS = [
+
+DC_STREAMER_DEFAULT_KEYWORDS_MASSAGE = [
+    'spa',
+    'table',
+    'shower',
+    'nuru',
+    'slide',
+    'therapy',
+    'therapist',
+    'bodyrub',
+    'sauna',
+    'gel',
+    'shiatsu',
+    'jacuzzi',
     'massage'
+]
+
+DC_STREAMER_DEFAULT_KEYWORDS_ESCORT = [
+    'click',
+    'tel',
+    'sorry',
+    'call',
+    'incall',
+    'outcall',
+    'hh',
+    'hr',
+    'quick',
+    'quickie',
+    'hott',
+    'legged',
+    'busty',
+    'male',
+    'playboy',
+    'gigolo',
+    'handsome',
+    'hunk',
+    'ts',
+    'tv',
+    'transvestite',
+    'tranny',
+    'tgirl',
+    'shemale',
+    'she-male',
+    'transsexual',
+    'transexual',
+    'ladyboy'
+]
+
+DC_STREAMER_DEFAULT_KEYWORDS_JOB_ADS = [
+    'employee',
+    'manager',
+    'OSHA',
+    'license',
+    'business',
+    'technician',
+    'certified',
+    'degree',
+    'salary',
+    'retail',
+    '401k',
+    'insurance'
 ]
 
 
 
+DC_STREAMER_DEFAULT_KEYWORDS = DC_STREAMER_DEFAULT_KEYWORDS_MASSAGE
 
-# DC_STREAMER_DEFAULT_KEYWORDS = [
-#     'click',
-#     'tel',
-#     'sorry',
-#     'call',
-#     'incall',
-#     'outcall',
-#     'hh',
-#     'hr',
-#     'quick',
-#     'quickie',
-#     'hott',
-#     'legged',
-#     'busty',
-#     'male',
-#     'playboy',
-#     'gigolo',
-#     'handsome',
-#     'hunk',
-#     'ts',
-#     'tv',
-#     'transvestite',
-#     'tranny',
-#     'tgirl',
-#     'shemale',
-#     'she-male',
-#     'transsexual',
-#     'transexual',
-#     'ladyboy',
-#     'employee',
-#     'manager',
-#     'OSHA',
-#     'license',
-#     'business',
-#     'technician',
-#     'certified',
-#     'degree',
-#     'salary',
-#     'retail',
-#     '401k',
-#     'insurance',
-#     'spa',
-#     'table',
-#     'shower',
-#     'nuru',
-#     'slide',
-#     'therapy',
-#     'therapist',
-#     'bodyrub',
-#     'sauna',
-#     'gel',
-#     'shiatsu',
-#     'jacuzzi'
-# ]
+
 
 ######################################################################
 #   Regular Expression
@@ -93,7 +100,7 @@ re_tokenize = re.compile(r'[\s!\"#\$%&\'\(\)\*\+,\-\./:;<=>\?@\[\\\]\^_`{|}~]')
 ######################################################################
 
 search_query = { 
-    "size": 1
+    "size": 30
 }
 
 
@@ -147,7 +154,7 @@ class Streamer(object):
 
         return data_lines
 
-    def generate(self, output_path=None, keywords=DC_STREAMER_DEFAULT_KEYWORDS, num_data=200):
+    def generate(self, output_path=None, keywords=DC_STREAMER_DEFAULT_KEYWORDS, num_data=20):
         ans = []
         for keyword in keywords:
             print 'keyword:', keyword
