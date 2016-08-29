@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-10 13:53:23
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-29 14:17:10
+# @Last Modified time: 2016-08-29 14:49:24
 
 
 import urllib3
@@ -93,7 +93,7 @@ re_tokenize = re.compile(r'[\s!\"#\$%&\'\(\)\*\+,\-\./:;<=>\?@\[\\\]\^_`{|}~]')
 ######################################################################
 
 search_query = { 
-    "size": 10000
+    "size": 1
 }
 
 
@@ -116,17 +116,17 @@ class Streamer(object):
         except Exception as e: 
             return []
             raise Exception('load data error')
-
+        # print buckets
         # load fetched data
-        ans = []
-        for bucket in buckets:
-            try:
-                text = json.dumps(bucket, sort_keys=True, indent=4)
-            except Exception as e:
-                continue
-            else:
-                ans.append(text)
-        return ans
+        # ans = []
+        # for bucket in buckets:
+        #     try:
+        #         text = json.dumps(bucket, sort_keys=True, indent=4)
+        #     except Exception as e:
+        #         continue
+        #     else:
+        #         ans.append(text)
+        return buckets
 
     def dedup_data(self, data_lines):
 
@@ -154,7 +154,7 @@ class Streamer(object):
             ans += self.load_data(keyword)
         # ans = self.dedup_data(ans)
         if output_path:
-            file_handler = open(output_path, 'wb')
+            file_handler = open(output_path, 'w')
             file_handler.write(json.dumps(ans, sort_keys=True, indent=4))
             file_handler.close()
 
