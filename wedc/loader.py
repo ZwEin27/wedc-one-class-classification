@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-29 15:39:31
+# @Last Modified time: 2016-08-29 16:02:08
 
 
 import re
@@ -301,20 +301,19 @@ class Loader(object):
     # Generate Data Functions
     #################################################
     
-    def __generate_data_jsonlines(dataset, path):
+    def __generate_data_jsonlines(dataset, path, default_label=-1):
         pass
 
-    def __generate_data_json(dataset, path):
+    def __generate_data_json(dataset, path, default_label=-1):
         pass
 
-    def __generate_data_csv(dataset, path):
+    def __generate_data_csv(dataset, path, default_label=-1):
         if not dataset:
             return
         with open(path, 'w') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=[DC_LABEL_NAME,DC_NODE_EXT_FEATURE_NAME_CONTENT]+DC_NODE_EXT_FEATURES)
             writer.writeheader()
             for data in dataset:
-                print 'write:', data
                 try:
                     content = data._content
                     if not content:
@@ -344,7 +343,7 @@ class Loader(object):
                     data = refined_data
                     # data = {k:str(v).replace('\n', ' ').replace('\r', ' ') for (k, v) in data._attrs.iteritems() if v}
                     # print 'sss'
-                    data.setdefault(DC_LABEL_NAME, -1)
+                    data.setdefault(DC_LABEL_NAME, default_label)
                     data.setdefault(DC_NODE_EXT_FEATURE_NAME_CONTENT, content)
                     # print '3333333333333333'
                     # print '#'*100
@@ -366,8 +365,8 @@ class Loader(object):
     }
 
     @staticmethod
-    def generate_data(dataset, path, format=DC_DATA_FILE_FORMAT_JSONLINES):
-        Loader.__loader_generate_data_funcs[format](dataset, path)
+    def generate_data(dataset, path, format=DC_DATA_FILE_FORMAT_JSONLINES, default_label=-1):
+        Loader.__loader_generate_data_funcs[format](dataset, path, default_label=default_label)
 
     #################################################
     # Main Load Data Functions
@@ -401,10 +400,11 @@ class Loader(object):
 
     @staticmethod
     def load_memexproxy_data(filepath=None, \
-                    output_filepath=None):
+                    output_filepath=None,
+                    default_label=-1):
         data = Loader.load_data(filepath, format=DC_DATA_FILE_FORMAT_JSONLINES)
         if output_filepath:
-            Loader.generate_data(data, output_filepath, format=DC_DATA_FILE_FORMAT_CSV)
+            Loader.generate_data(data, output_filepath, format=DC_DATA_FILE_FORMAT_CSV, default_label=default_label)
         return data
 
     @staticmethod
@@ -422,10 +422,17 @@ if __name__ == '__main__':
     # Loader.load_memex_data(filepath='/Volumes/Expansion/2016_memex/readability/part-00000')
 
 
+    DC_CATEGORY_DICT = {
+        'massage': 2,
+        'escort': 3,
+        'job_ads': 4
+    }
 
-    Loader.load_memexproxy_data( \
-        filepath=os.path.join(os.path.dirname(__file__),'res', 'memexproxy_massage.json'), \
-        output_filepath=os.path.join(os.path.dirname(__file__),'res', 'memexproxy_massage_training.csv'))
+    for cate_name, cate_no in DC_CATEGORY_DICT.iteritems():
+        input_filename = os.path.join(os.path.dirname(__file__),'res', 'memexproxy_'+cate_name+'.json')
+        output_filename = os.path.join(os.path.dirname(__file__),'res', 'memexproxy_'+cate_name+'_training.csv')
+        Loader.load_memexproxy_data(filepath=input_filename, output_filepath=output_filename, default_label=cate_no)
+        break
 
 
 
