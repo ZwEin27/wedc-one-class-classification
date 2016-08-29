@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-18 15:54:25
+# @Last Modified time: 2016-08-29 15:21:59
 
 
 import re
@@ -121,9 +121,10 @@ class Loader(object):
         # to be updated
         import jsonlines
         dataset = []
+
         lines = jsonlines.open(path, mode='r')
         for line in lines:
-            dataset.append([line['sid'], line['content']])
+            dataset.append(json.loads(line))
         return dataset
 
     def __load_data_json(path):
@@ -350,6 +351,14 @@ class Loader(object):
         return data
 
     @staticmethod
+    def load_memexproxy_data(filepath=None, \
+                    output_filepath=None):
+        data = Loader.load_data(filepath, format=DC_DATA_FILE_FORMAT_JSONLINES)
+        # if output_filepath:
+        #     Loader.generate_data(data, output_filepath, format=DC_DATA_FILE_FORMAT_CSV)
+        return data
+
+    @staticmethod
     def load_vectors(nodes):
         vectors = []
         for node in nodes:
@@ -361,7 +370,13 @@ if __name__ == '__main__':
 
     # Loader.load_training_data()
     # Loader.load_dig_data(filepath=DC_DEFAULT_DIG_WEBPAGE_DATA_FILEPATH, output_filepath=DC_DEFAULT_TRAINING_DATA_FILEPATH)
-    Loader.load_memex_data(filepath='/Volumes/Expansion/2016_memex/readability/part-00000')
+    # Loader.load_memex_data(filepath='/Volumes/Expansion/2016_memex/readability/part-00000')
+
+
+
+    Loader.load_memexproxy_data( \
+        filepath=os.path.join(os.path.dirname(__file__),'res', 'memexproxy_massage.json'), \
+        output_filepath=os.path.join(os.path.dirname(__file__),'res', 'memexproxy_massage_training.csv'))
 
 
 

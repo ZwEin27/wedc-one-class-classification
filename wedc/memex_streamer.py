@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-10 13:53:23
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-29 15:08:06
+# @Last Modified time: 2016-08-29 15:25:05
 
 
 import urllib3
@@ -85,7 +85,7 @@ DC_STREAMER_DEFAULT_KEYWORDS_JOB_ADS = [
 
 
 
-DC_STREAMER_DEFAULT_KEYWORDS = DC_STREAMER_DEFAULT_KEYWORDS_JOB_ADS
+DC_STREAMER_DEFAULT_KEYWORDS = DC_STREAMER_DEFAULT_KEYWORDS_MASSAGE
 
 
 
@@ -100,6 +100,15 @@ re_tokenize = re.compile(r'[\s!\"#\$%&\'\(\)\*\+,\-\./:;<=>\?@\[\\\]\^_`{|}~]')
 ######################################################################
 
 search_query = { 
+    "query": {
+        "filtered": {
+            "query": {
+                "match": {
+                    "_source.readability_text": "massage"
+                }
+            }
+        }
+    },
     "size": 30
 }
 
@@ -118,7 +127,7 @@ class Streamer(object):
     def load_data(self, keyword):
         # load data for specifc site name
         try:
-            # search_query['query']['filtered']['query']['match']['extractions.text.results'] = keyword
+            search_query['query']['filtered']['query']['match']['extractions.text.results'] = keyword
             buckets = self.es.search(index='dig-extractions-july-16', body=search_query)['hits']['hits']
         except Exception as e: 
             return []
