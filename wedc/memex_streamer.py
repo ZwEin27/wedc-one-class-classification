@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-10 13:53:23
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-29 15:25:05
+# @Last Modified time: 2016-08-29 16:21:46
 
 
 import urllib3
@@ -19,7 +19,6 @@ urllib3.disable_warnings()
 ######################################################################
 #   Constant
 ######################################################################
-
 
 DC_STREAMER_DEFAULT_KEYWORDS_MASSAGE = [
     'spa',
@@ -85,7 +84,13 @@ DC_STREAMER_DEFAULT_KEYWORDS_JOB_ADS = [
 
 
 
-DC_STREAMER_DEFAULT_KEYWORDS = DC_STREAMER_DEFAULT_KEYWORDS_MASSAGE
+DC_STREAMER_DEFAULT_KEYWORDS = {
+    'massage': DC_STREAMER_DEFAULT_KEYWORDS_MASSAGE,
+    'escort': DC_STREAMER_DEFAULT_KEYWORDS_ESCORT,
+    'job_ads': DC_STREAMER_DEFAULT_KEYWORDS_JOB_ADS,
+}
+
+
 
 
 
@@ -163,7 +168,10 @@ class Streamer(object):
 
         return data_lines
 
-    def generate(self, output_path=None, keywords=DC_STREAMER_DEFAULT_KEYWORDS, num_data=20):
+    def generate(self, output_path=None, keywords=None, num_data=20, keyword_cate='massage'):
+        keywords = keywords if keywords else []
+        if keyword_cate:
+            keywords += DC_STREAMER_DEFAULT_KEYWORDS[keyword_cate]
         ans = []
         for keyword in keywords:
             print 'keyword:', keyword
@@ -186,12 +194,13 @@ if __name__ == '__main__':
     arg_parser.add_argument('-k','--keywords', required=False)
     arg_parser.add_argument('-n','--num_data', required=False)
     arg_parser.add_argument('-o','--output_path', required=False)
+    arg_parser.add_argument('-c','--keyword_category', required=False)
 
     args = arg_parser.parse_args()
 
     streamer = Streamer(args.token)
 
-    keywords = args.keywords if args.keywords else DC_STREAMER_DEFAULT_KEYWORDS
+    keywords = args.keywords if args.keywords else []
     num_data = args.num_data if args.num_data else 10
        
-    streamer.generate(keywords=keywords, num_data=num_data, output_path=args.output_path)
+    streamer.generate(keywords=keywords, num_data=num_data, output_path=args.output_path, keyword_cate=args.keyword_category)
