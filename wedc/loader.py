@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-29 15:21:59
+# @Last Modified time: 2016-08-29 15:39:31
 
 
 import re
@@ -122,9 +122,58 @@ class Loader(object):
         import jsonlines
         dataset = []
 
-        lines = jsonlines.open(path, mode='r')
-        for line in lines:
-            dataset.append(json.loads(line))
+        json_objs = json.load(codecs.open(path, 'r'))
+        for json_obj in json_objs:
+            json_obj = json_obj['_source']
+
+            description = title = readability_text = high_recall_readability_text = location = is_valid_extraction = email = drug_use = physical_address = review_id = timestamp = price = phone = services = price_per_hour = business_type = inferlink_text = hyperlink = url = gender = age = posting_date = doc_id = None
+
+            description = json_obj['description'] if 'description' in json_obj else None
+            title = json_obj['title'] if 'title' in json_obj else None
+            readability_text = json_obj['readability_text'] if 'readability_text' in json_obj else None
+            high_recall_readability_text = json_obj['high_recall_readability_text'] if 'high_recall_readability_text' in json_obj else None
+            location = json_obj['location'] if 'location' in json_obj else None
+            is_valid_extraction = json_obj['is_valid_extraction'] if 'is_valid_extraction' in json_obj else None
+            email = json_obj['email'] if 'email' in json_obj else None
+            drug_use = json_obj['drug_use'] if 'drug_use' in json_obj else None
+            physical_address = json_obj['location'] if 'location' in json_obj else None
+            review_id = json_obj['review_id'] if 'review_id' in json_obj else None
+            timestamp = json_obj['timestamp'] if 'timestamp' in json_obj else None
+            price = json_obj['price'] if 'price' in json_obj else None
+            phone = json_obj['phone'] if 'phone' in json_obj else None
+            services = json_obj['services'] if 'services' in json_obj else None
+            price_per_hour = json_obj['price_per_hour'] if 'price_per_hour' in json_obj else None
+            business_type = json_obj['business_type'] if 'business_type' in json_obj else None
+            inferlink_text = json_obj['inferlink_text'] if 'inferlink_text' in json_obj else None
+            hyperlink = json_obj['hyperlink'] if 'hyperlink' in json_obj else None
+            url = json_obj['url'] if 'url' in json_obj else None
+            gender = json_obj['gender'] if 'gender' in json_obj else None
+            age = json_obj['age'] if 'age' in json_obj else None
+            posting_date = json_obj['posting_date'] if 'posting_date' in json_obj else None
+            doc_id = json_obj['doc_id'] if 'doc_id' in json_obj else None
+            
+            node_text = readability_text if readability_text else ' '
+            if not isinstance(node_text, basestring):
+                try:
+                    node_text = ' '.join([_ for _ in node_text if _ and isinstance(_, basestring)])
+                except:
+                    node_text = str(node_text)
+
+            new_node = Node( \
+                node_text, \
+                location=location, \
+                email=email, \
+                drug_use=drug_use, \
+                price=price, \
+                price_per_hour=price_per_hour, \
+                business_type=business_type, \
+                url=url, \
+                services=services, \
+                gender=gender, \
+                phone=phone, \
+                age=age)
+
+            dataset.append(new_node)
         return dataset
 
     def __load_data_json(path):
@@ -172,7 +221,6 @@ class Loader(object):
 
                 new_node = Node( \
                     raw_content, \
-                    doc_id=doc_id, \
                     posttime=posttime, \
                     city=city, \
                     text=text, \
@@ -266,6 +314,7 @@ class Loader(object):
             writer = csv.DictWriter(csvfile, fieldnames=[DC_LABEL_NAME,DC_NODE_EXT_FEATURE_NAME_CONTENT]+DC_NODE_EXT_FEATURES)
             writer.writeheader()
             for data in dataset:
+                print 'write:', data
                 try:
                     content = data._content
                     if not content:
@@ -354,8 +403,8 @@ class Loader(object):
     def load_memexproxy_data(filepath=None, \
                     output_filepath=None):
         data = Loader.load_data(filepath, format=DC_DATA_FILE_FORMAT_JSONLINES)
-        # if output_filepath:
-        #     Loader.generate_data(data, output_filepath, format=DC_DATA_FILE_FORMAT_CSV)
+        if output_filepath:
+            Loader.generate_data(data, output_filepath, format=DC_DATA_FILE_FORMAT_CSV)
         return data
 
     @staticmethod
