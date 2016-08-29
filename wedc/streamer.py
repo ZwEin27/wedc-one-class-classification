@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-10 13:53:23
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-25 16:19:40
+# @Last Modified time: 2016-08-29 14:05:58
 
 
 import urllib3
@@ -183,6 +183,7 @@ class Streamer(object):
     def __init__(self, token):
         # self.username, self.password = token.split(':')
         self.cdr = 'https://' + token + '@cdr-es.istresearch.com:9200/memex-domains'
+        # self.cdr = 'https://' + token + '@esc.memexproxy.com'
         self.es = Elasticsearch([self.cdr])
 
     def load_sites(self):

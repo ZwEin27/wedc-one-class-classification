@@ -2,7 +2,13 @@
 # @Author: ZwEin
 # @Date:   2016-06-20 10:55:39
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-29 13:40:54
+# @Last Modified time: 2016-08-29 13:53:09
+
+
+"""
+919114 in total
+
+"""
 
 """
 
@@ -67,9 +73,6 @@ def run(sc, input_file, output_dir):
         if 'description' in json_obj:
             desc = extract_content(json_obj['description'])
             text_list.append(desc)
-        if 'name' in json_obj:
-            name = extract_content(json_obj['name'])
-            text_list.append(name)
         return (str(key), ' '.join(text_list))
 
     # for file_path in os.listdir(files_dir):
@@ -82,9 +85,8 @@ def run(sc, input_file, output_dir):
     # if os.path.isfile(SparkFiles.get(os.path.join('python_files.zip', 'en', 'lexnames'))):
     #     print 'exist'
     
-
     rdd_original = load_jsonlines(sc, input_file)
-    # rdd_content = rdd_original.map(map_load_data)
+    rdd_content = rdd_original.map(map_load_data)
  
 
     # rdd.saveAsTextFile(output_dir)
