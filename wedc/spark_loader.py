@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-06-20 10:55:39
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-09-02 14:41:50
+# @Last Modified time: 2016-09-02 15:43:52
 
 
 """
@@ -177,7 +177,7 @@ def run(sc, input_file, output_dir, cateory='massage'):
                     if keyword in tokens:
                         # ans.append(json_obj)
                         return (str(key), json_obj)
-            return (str(key), None)
+            return (str(key), '')
         return _map_load_data
 
 
@@ -196,16 +196,27 @@ def run(sc, input_file, output_dir, cateory='massage'):
     
     rdd_original = load_jsonlines(sc, input_file)
     rdd_content = rdd_original.map(map_load_data('massage'))
+    rdd_content = rdd_content.values()
 
-
+    def my_method(line):
+        return [line] if not isinstance(line, basestring) else []
+    rdd_content = rdd_content.flatMap(lambda line: my_method(line))
     # print rdd_original.collect()[0]
     # print rdd_content.count()
 
     # rdd.saveAsTextFile(output_dir)
     # save_jsonlines(sc, rdd, output_dir, file_format='sequence', data_type='json')
     
+    rdd_content = rdd_content.coalesce(1)   # output single
     rdd_content.saveAsTextFile(output_dir)
     # save_jsonlines(sc, rdd_content, output_dir, file_format='text', data_type='json')
+
+
+    # dataset = rdd_content.collect()
+    # with open(os.path.join(output_dir, cateory), 'wb') as file_handler:
+    #     for data in dataset:
+    #         file_handler.write(json.dumps(data, indent=4))
+
 
 if __name__ == '__main__':
 
