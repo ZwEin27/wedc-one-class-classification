@@ -2,10 +2,10 @@
 # @Author: ZwEin
 # @Date:   2016-08-09 11:36:55
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-09-01 18:35:38
+# @Last Modified time: 2016-09-01 20:10:56
 
 from loader import Loader
-
+import json
 import numpy as np
 from sklearn import svm
 
@@ -100,8 +100,8 @@ class Classifier(object):
             n_true_test = y_pred_test[y_pred_test == 1].size
             n_true_outliers = y_pred_outliers[y_pred_outliers == -1].size
 
-            print 'error_test index', [inner_data_index[split_point:][_] for _ in [i for i in range(len(y_pred_test)) if y_pred_test[i] == -1]]
-            print 'error_outlier index', [outer_data_index[_] for _ in [i for i in range(len(y_pred_outliers)) if y_pred_outliers[i] == -1]]
+            # print 'error_test index', [inner_data_index[split_point:][_] for _ in [i for i in range(len(y_pred_test)) if y_pred_test[i] == -1]]
+            # print 'error_outlier index', [outer_data_index[_] for _ in [i for i in range(len(y_pred_outliers)) if y_pred_outliers[i] == -1]]
 
             print 'error_train:', str(n_error_train)+'/'+str(len(train_data)), \
                 ', error_test:', str(n_error_test)+'/'+str(len(test_data)), \
@@ -109,6 +109,16 @@ class Classifier(object):
 
             print 'precision:', str(n_true_test)+'/'+str(n_true_test+n_error_outliers)
             print 'recall:', str(n_true_test)+'/'+str(len(test_data))
+
+
+            print cate_name+': error_train:', json.dumps([[_._content for _ in self._training_data if _._label == cate_no][i] for i in range(len(list(y_pred_train))) if list(y_pred_train)[i] == -1], indent=4)
+            print cate_name+': error_test:', json.dumps([[_._content for _ in self._training_data if _._label == cate_no][i+len(train_data)] for i in range(len(list(y_pred_test))) if list(y_pred_test)[i] == -1], indent=4)
+            print cate_name+': error_outlier:', json.dumps([[_._content for _ in self._training_data if _._label != cate_no][i] for i in range(len(list(y_pred_outliers))) if list(y_pred_outliers)[i] == 1], indent=4)
+            
+            # print 'error_train:', json.dumps([train_data[i] for i in range(len(list(y_pred_train))) if list(y_pred_train)[i] == -1], indent=4)
+            # print 'error_test:', json.dumps([test_data[i] for i in range(len(list(y_pred_test))) if list(y_pred_test)[i] == -1], indent=4)
+            # print 'error_outlier:', json.dumps([outlier_data[i] for i in range(len(list(y_pred_outliers))) if list(y_pred_outliers)[i] == 1], indent=4)
+
 
             print '\n\n\n'
 
