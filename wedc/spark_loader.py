@@ -2,11 +2,12 @@
 # @Author: ZwEin
 # @Date:   2016-06-20 10:55:39
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-09-02 13:33:27
+# @Last Modified time: 2016-09-02 14:41:50
 
 
 """
 919114 lines of data in total
+184194 contains massage
 
 """
 
@@ -31,16 +32,18 @@ spark-submit \
 import json
 import sys
 import os
+import re
+import string
 import argparse
 from pyspark import SparkContext, SparkConf, SparkFiles
 from digSparkUtil.fileUtil import FileUtil
 
-DC_STREAMER_DEFAULT_KEYWORDS_MASSAGE = [
+re_word = re.compile(r'[a-zA-Z0-9]+')
+
+DC_DEFAULT_KEYWORDS_MASSAGE = [
     'massages',
-    'sensual',
     'touch',
     'sexy',
-    'relaxing',
     'charm',
     'energy',
     'bodyrub',
@@ -50,7 +53,6 @@ DC_STREAMER_DEFAULT_KEYWORDS_MASSAGE = [
     'session',
     'beautiful',
     'teasing',
-    'with',
     'addition',
     'sweet',
     'spirit',
@@ -78,7 +80,7 @@ DC_STREAMER_DEFAULT_KEYWORDS_MASSAGE = [
     'aromatherapy'
 ]
 
-DC_STREAMER_DEFAULT_KEYWORDS_ESCORT = [
+DC_DEFAULT_KEYWORDS_ESCORT = [
     'click',
     'tel',
     'sorry',
@@ -109,7 +111,7 @@ DC_STREAMER_DEFAULT_KEYWORDS_ESCORT = [
     'ladyboy'
 ]
 
-DC_STREAMER_DEFAULT_KEYWORDS_JOB_ADS = [
+DC_DEFAULT_KEYWORDS_JOB_ADS = [
     'employee',
     'manager',
     'OSHA',
@@ -125,11 +127,10 @@ DC_STREAMER_DEFAULT_KEYWORDS_JOB_ADS = [
 ]
 
 
-
-DC_STREAMER_DEFAULT_KEYWORDS = {
-    'massage': DC_STREAMER_DEFAULT_KEYWORDS_MASSAGE,
-    'escort': DC_STREAMER_DEFAULT_KEYWORDS_ESCORT,
-    'job_ads': DC_STREAMER_DEFAULT_KEYWORDS_JOB_ADS,
+DC_DEFAULT_KEYWORDS = {
+    'massage': DC_DEFAULT_KEYWORDS_MASSAGE,
+    'escort': DC_DEFAULT_KEYWORDS_ESCORT,
+    'job_ads': DC_DEFAULT_KEYWORDS_JOB_ADS,
 }
 
 
@@ -163,17 +164,24 @@ def extract_content(raw):
     return ' '.join(content)
 
 
-def run(sc, input_file, output_dir):
+def run(sc, input_file, output_dir, cateory='massage'):
 
-    def map_load_data(data):
-        key, json_obj = data
-        text_list = []
-        if 'readability_text' in json_obj:
-            desc = extract_content(json_obj['readability_text'])
+    def map_load_data(keywords):
+        def _map_load_data(data):
+            key, json_obj = data
+            # ans = []
+            if 'readability_text' in json_obj:
+                desc = extract_content(json_obj['readability_text'])
+                tokens = re_word.findall(desc)
+                for keyword in keywords:
+                    if keyword in tokens:
+                        # ans.append(json_obj)
+                        return (str(key), json_obj)
+            return (str(key), None)
+        return _map_load_data
 
 
-            text_list.append(desc)
-        return (str(key), ' '.join(text_list))
+        # return (str(key), ' '.join(ans))
 
     # for file_path in os.listdir(files_dir):
     #     if file_path[0] != '.':
@@ -183,15 +191,21 @@ def run(sc, input_file, output_dir):
     # print os.listdir(os.path.join(SparkFiles.getRootDirectory(), 'python_files.zip'))
     # if os.path.isfile(SparkFiles.get(os.path.join('python_files.zip', 'en', 'lexnames'))):
     #     print 'exist'
+
+    keywords = DC_DEFAULT_KEYWORDS[cateory]
     
     rdd_original = load_jsonlines(sc, input_file)
-    # rdd_content = rdd_original.map(map_load_data)
-    print rdd_original.collect()[0]
+    rdd_content = rdd_original.map(map_load_data('massage'))
+
+
+    # print rdd_original.collect()[0]
     # print rdd_content.count()
 
     # rdd.saveAsTextFile(output_dir)
     # save_jsonlines(sc, rdd, output_dir, file_format='sequence', data_type='json')
     
+    rdd_content.saveAsTextFile(output_dir)
+    # save_jsonlines(sc, rdd_content, output_dir, file_format='text', data_type='json')
 
 if __name__ == '__main__':
 
