@@ -2,11 +2,11 @@
 # @Author: ZwEin
 # @Date:   2016-06-20 10:55:39
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-09-02 13:17:45
+# @Last Modified time: 2016-09-02 13:33:27
 
 
 """
-919114 in total
+919114 lines of data in total
 
 """
 
@@ -34,6 +34,104 @@ import os
 import argparse
 from pyspark import SparkContext, SparkConf, SparkFiles
 from digSparkUtil.fileUtil import FileUtil
+
+DC_STREAMER_DEFAULT_KEYWORDS_MASSAGE = [
+    'massages',
+    'sensual',
+    'touch',
+    'sexy',
+    'relaxing',
+    'charm',
+    'energy',
+    'bodyrub',
+    'lovely',
+    'full',
+    'relaxation',
+    'session',
+    'beautiful',
+    'teasing',
+    'with',
+    'addition',
+    'sweet',
+    'spirit',
+    'unique',
+    'pleasure',
+    'tantra',
+    'erotic',
+    'prostate',
+    'therapeutic',
+    'tantric',
+    'oil',
+    'sensitive',
+    'sensual',
+    'relaxing',
+    'therapist',
+    'therapy',
+    'body',
+    'nude',
+    'classic',
+    'jessie',
+    'massage',
+    'spa',
+    'thai',
+    'kamasutra',
+    'aromatherapy'
+]
+
+DC_STREAMER_DEFAULT_KEYWORDS_ESCORT = [
+    'click',
+    'tel',
+    'sorry',
+    'call',
+    'incall',
+    'outcall',
+    'hh',
+    'hr',
+    'quick',
+    'quickie',
+    'hott',
+    'legged',
+    'busty',
+    'male',
+    'playboy',
+    'gigolo',
+    'handsome',
+    'hunk',
+    'ts',
+    'tv',
+    'transvestite',
+    'tranny',
+    'tgirl',
+    'shemale',
+    'she-male',
+    'transsexual',
+    'transexual',
+    'ladyboy'
+]
+
+DC_STREAMER_DEFAULT_KEYWORDS_JOB_ADS = [
+    'employee',
+    'manager',
+    'OSHA',
+    'license',
+    'business',
+    'technician',
+    'certified',
+    'degree',
+    'salary',
+    'retail',
+    '401k',
+    'insurance'
+]
+
+
+
+DC_STREAMER_DEFAULT_KEYWORDS = {
+    'massage': DC_STREAMER_DEFAULT_KEYWORDS_MASSAGE,
+    'escort': DC_STREAMER_DEFAULT_KEYWORDS_ESCORT,
+    'job_ads': DC_STREAMER_DEFAULT_KEYWORDS_JOB_ADS,
+}
+
 
 
 def load_jsonlines(sc, input, file_format='sequence', data_type='json', separator='\t'):
@@ -70,15 +168,16 @@ def run(sc, input_file, output_dir):
     def map_load_data(data):
         key, json_obj = data
         text_list = []
-        if 'description' in json_obj:
-            desc = extract_content(json_obj['description'])
+        if 'readability_text' in json_obj:
+            desc = extract_content(json_obj['readability_text'])
+
+
             text_list.append(desc)
         return (str(key), ' '.join(text_list))
 
     # for file_path in os.listdir(files_dir):
     #     if file_path[0] != '.':
     #         sc.addFile(os.path.join(files_dir, file_path))
-    
 
     # print os.listdir(SparkFiles.getRootDirectory())
     # print os.listdir(os.path.join(SparkFiles.getRootDirectory(), 'python_files.zip'))
@@ -86,9 +185,9 @@ def run(sc, input_file, output_dir):
     #     print 'exist'
     
     rdd_original = load_jsonlines(sc, input_file)
-    rdd_content = rdd_original.map(map_load_data)
-    print rdd_content.count()
-    # pass
+    # rdd_content = rdd_original.map(map_load_data)
+    print rdd_original.collect()[0]
+    # print rdd_content.count()
 
     # rdd.saveAsTextFile(output_dir)
     # save_jsonlines(sc, rdd, output_dir, file_format='sequence', data_type='json')
