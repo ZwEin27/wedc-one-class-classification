@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-10 13:53:23
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-29 16:21:46
+# @Last Modified time: 2016-09-01 16:15:42
 
 
 import urllib3
@@ -130,14 +130,14 @@ class Streamer(object):
         self.es = Elasticsearch([self.cdr])
 
     def load_data(self, keyword):
-        # load data for specifc site name
         try:
             search_query['query']['filtered']['query']['match']['extractions.text.results'] = keyword
             buckets = self.es.search(index='dig-extractions-july-16', body=search_query)['hits']['hits']
-        except Exception as e: 
+        except Exception as e:
+            print e
             return []
             raise Exception('load data error')
-        # print buckets
+        # print 'buckets\n',buckets
         # load fetched data
         # ans = []
         # for bucket in buckets:
@@ -176,6 +176,8 @@ class Streamer(object):
         for keyword in keywords:
             print 'keyword:', keyword
             ans += self.load_data(keyword)
+            break
+
         # ans = self.dedup_data(ans)
         if output_path:
             file_handler = open(output_path, 'w')

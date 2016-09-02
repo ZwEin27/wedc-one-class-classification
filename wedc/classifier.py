@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-09 11:36:55
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-22 13:47:10
+# @Last Modified time: 2016-09-01 18:35:38
 
 from loader import Loader
 
@@ -59,8 +59,8 @@ class Classifier(object):
             inner_data_index = [i for i in range(len(self._training_data)) if self._training_data[i]._label == cate_no]
             outer_data_index = [i for i in range(len(self._training_data)) if self._training_data[i]._label != cate_no]
 
-            print 'inner_data_index:', inner_data_index
-            print 'outer_data_index:', outer_data_index
+            # print 'inner_data_index:', inner_data_index
+            # print 'outer_data_index:', outer_data_index
 
             if not inner_data:
                 continue
