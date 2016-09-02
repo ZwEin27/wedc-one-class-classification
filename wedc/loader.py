@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-09-02 15:56:54
+# @Last Modified time: 2016-09-02 16:03:54
 
 
 import re
@@ -133,7 +133,7 @@ class Loader(object):
             gender = json_obj['gender'] if 'gender' in json_obj else None
             url = json_obj['url'] if 'url' in json_obj else None
             readability_text = json_obj['readability_text'] if 'readability_text' in json_obj else None
-            inferlink_text = json_obj['inferlink_text'] if 'inferlink_text' in json_obj else None
+            # inferlink_text = json_obj['inferlink_text'] if 'inferlink_text' in json_obj else None
             
             node_text = readability_text if readability_text else ' '
 
@@ -146,17 +146,12 @@ class Loader(object):
             new_node = Node( \
                 node_text, \
                 location=location, \
-                email=email, \
-                drug_use=drug_use, \
-                price=price, \
-                price_per_hour=price_per_hour, \
-                business_type=business_type, \
                 url=url, \
+                telephone=telephone \
                 services=services, \
                 gender=gender, \
                 phone=phone, \
                 age=age)
-
             dataset.append(new_node)
         return dataset
 
@@ -392,10 +387,12 @@ class Loader(object):
         return data
 
     @staticmethod
-    def load_spark_data(dirpath=None, \
+    def load_spark_data(filepath=None, \
                     output_filepath=None,   \
                     default_label=-1):
-        data = Loader.load_data(dirpath, format=DC_DATA_FILE_FORMAT_JSONLINES)
+
+    
+        data = Loader.load_data(filepath, format=DC_DATA_FILE_FORMAT_JSONLINES)
         # if output_filepath:
         #     Loader.generate_data(data, output_filepath, format=DC_DATA_FILE_FORMAT_CSV, default_label=default_label)
         # return data
