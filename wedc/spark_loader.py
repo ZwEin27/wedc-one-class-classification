@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-06-20 10:55:39
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-08-29 13:53:09
+# @Last Modified time: 2016-09-02 13:17:45
 
 
 """
@@ -19,7 +19,7 @@ spark-submit \
 --driver-memory 6g \
 --executor-memory 6g  --executor-cores 4  --num-executors 20 \
 /Users/ZwEin/job_works/StudentWork_USC-ISI/projects/wedc-one-class-classification/wedc/spark_loader.py \
---input_file /Volumes/Expansion/2016_memex/readability \
+--input_file /Users/ZwEin/job_works/StudentWork_USC-ISI/dataset/readability \
 --output_dir /Volumes/Expansion/2016_memex/readability_output
 
 
@@ -87,7 +87,8 @@ def run(sc, input_file, output_dir):
     
     rdd_original = load_jsonlines(sc, input_file)
     rdd_content = rdd_original.map(map_load_data)
- 
+    print rdd_content.count()
+    # pass
 
     # rdd.saveAsTextFile(output_dir)
     # save_jsonlines(sc, rdd, output_dir, file_format='sequence', data_type='json')
