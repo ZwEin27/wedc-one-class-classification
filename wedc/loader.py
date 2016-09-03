@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-09-02 16:03:54
+# @Last Modified time: 2016-09-02 16:29:27
 
 
 import re
@@ -122,9 +122,21 @@ class Loader(object):
         # import jsonlines
         dataset = []
 
-        # json_objs = json.load(codecs.open(path, 'r'))
-        for json_obj in json_objs:
-
+        # json_objs = json.load()
+        # for json_obj in json_objs:
+        i = 0
+        # file_handler = codecs.open(path, 'r')
+        # lines = file_handler.readlines()
+        for line in codecs.open(path, 'r'):
+            # line = line.replace("\'", '"').replace("u\"", '\"')
+            try:
+                # json_obj = json.loads(line)
+                json_obj = yaml.safe_load(line)
+            except Exception as e:
+                print e, i
+                print line.strip()
+                break
+            i += 1
             # telephone = addressLocality = gender_count = relatedLink = title_count = title = inferlink_date = seller = readability_text = top_level_domain = readability_text_count = age_count = url = gender = uri = identifier = age = telephone_count
 
             telephone = json_obj['telephone'] if 'telephone' in json_obj else None
@@ -147,8 +159,7 @@ class Loader(object):
                 node_text, \
                 location=location, \
                 url=url, \
-                telephone=telephone \
-                services=services, \
+                telephone=telephone, \
                 gender=gender, \
                 phone=phone, \
                 age=age)
@@ -391,11 +402,10 @@ class Loader(object):
                     output_filepath=None,   \
                     default_label=-1):
 
-    
         data = Loader.load_data(filepath, format=DC_DATA_FILE_FORMAT_JSONLINES)
-        # if output_filepath:
-        #     Loader.generate_data(data, output_filepath, format=DC_DATA_FILE_FORMAT_CSV, default_label=default_label)
-        # return data
+        if output_filepath:
+            Loader.generate_data(data, output_filepath, format=DC_DATA_FILE_FORMAT_CSV, default_label=default_label)
+        return data
 
     @staticmethod
     def load_vectors(nodes):
@@ -424,6 +434,10 @@ if __name__ == '__main__':
     #     Loader.load_memexproxy_data(filepath=input_filename, output_filepath=output_filename, default_label=cate_no)
     #     break
 
+    Loader.load_spark_data(
+        filepath='/Volumes/Expansion/2016_memex/massage.jl', 
+        output_filepath=os.path.join(os.path.dirname(__file__), 'res', 'massage.csv'),
+        default_label=2)
 
 
 
