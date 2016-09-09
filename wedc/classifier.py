@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-09 11:36:55
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-09-07 20:15:30
+# @Last Modified time: 2016-09-09 11:00:06
 
 from loader import Loader
 import json
@@ -30,9 +30,9 @@ class Classifier(object):
         self._training_data = Loader.load_training_data(filepath=training_data_file_path) if self._training_data_file_path else Loader.load_training_data()
 
         self.classifiers = {
-            DC_CATEGORY_NAME_MASSAGE: svm.OneClassSVM(nu=0.1, kernel="rbf", gamma=0.1, max_iter=1000, tol=0.0001),
-            DC_CATEGORY_NAME_ESCORT: svm.OneClassSVM(nu=0.1, kernel="rbf", gamma=0.1),
-            DC_CATEGORY_NAME_JOB_ADS: svm.OneClassSVM(nu=0.1, kernel="rbf", gamma=1./10, max_iter=1000, tol=0.0001)
+            DC_CATEGORY_NAME_MASSAGE: svm.OneClassSVM(nu=0.1, kernel="sigmoid", gamma=0.1, max_iter=1000, tol=0.0001),
+            DC_CATEGORY_NAME_ESCORT: svm.OneClassSVM(nu=0.1, kernel="sigmoid", gamma=0.1),
+            DC_CATEGORY_NAME_JOB_ADS: svm.OneClassSVM(nu=0.1, kernel="sigmoid", gamma=1./10, max_iter=1000, tol=0.0001)
         }
 
 

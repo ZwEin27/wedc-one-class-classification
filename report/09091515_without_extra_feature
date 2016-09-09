@@ -1,0 +1,31 @@
+evaluate escort with label 3
+----------------------------------------
+total ground truth: 211 , train_data: 168 , test_data: 43 , outlier_data: 299
+error_train: 24/168 , error_test: 6/43 , error_outlier: 0/299
+precision: 37/37
+recall: 37/43
+
+
+
+
+evaluate massage with label 2
+----------------------------------------
+total ground truth: 90 , train_data: 72 , test_data: 18 , outlier_data: 420
+error_train: 13/72 , error_test: 9/18 , error_outlier: 72/420
+precision: 9/81
+recall: 9/18
+
+
+
+
+evaluate job_ads with label 4
+----------------------------------------
+total ground truth: 209 , train_data: 167 , test_data: 42 , outlier_data: 301
+error_train: 17/167 , error_test: 6/42 , error_outlier: 0/301
+precision: 36/36
+recall: 36/42
+
+
+
+
+[Finished in 39.2s]

@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-08-08 11:46:11
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-09-07 18:06:55
+# @Last Modified time: 2016-09-09 13:04:19
 
 
 from vendor.crf_tokenizer import CrfTokenizer
@@ -41,8 +41,8 @@ DC_NODE_EXT_FEATURES = [
     DC_NODE_EXT_FEATURE_NAME_AGE
 ]
 
-# DC_NODE_FEATURES = DC_NODE_EXT_FEATURES + sorted(seeds)
-DC_NODE_FEATURES = sorted(seeds)
+DC_NODE_FEATURES = DC_NODE_EXT_FEATURES + sorted(seeds)
+# DC_NODE_FEATURES = sorted(seeds)
 # print DC_NODE_FEATURES
 class Node(object):
 
