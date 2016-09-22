@@ -2,7 +2,7 @@
 # @Author: ZwEin
 # @Date:   2016-06-20 10:55:39
 # @Last Modified by:   ZwEin
-# @Last Modified time: 2016-09-05 18:51:30
+# @Last Modified time: 2016-09-22 10:45:54
 
 
 """
@@ -20,12 +20,9 @@ spark-submit \
 --driver-memory 6g \
 --executor-memory 6g  --executor-cores 4  --num-executors 20 \
 /Users/ZwEin/job_works/StudentWork_USC-ISI/projects/wedc-one-class-classification/wedc/spark_loader.py \
---input_file /Users/ZwEin/job_works/StudentWork_USC-ISI/dataset/readability \
---output_dir /Volumes/Expansion/2016_memex/readability_output
-
-
-
---files_dir /Users/ZwEin/job_works/StudentWork_USC-ISI/projects/WEDC/spark_dependencies/python_files
+--input_file <input_file_path> \
+--output_dir <output_dir_path> \
+--cateory 'massage' or 'escort' or 'job_ads'
 
 """
 
@@ -217,11 +214,12 @@ if __name__ == '__main__':
 
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument('-i','--input_file', required=True)
-    arg_parser.add_argument('-o','--output_dir')#, required=True)
+    arg_parser.add_argument('-o','--output_dir')
+    arg_parser.add_argument('-c','--category')
 
     args = arg_parser.parse_args()
 
     spark_config = SparkConf().setAppName('WEDC')
     sc = SparkContext(conf=spark_config)
 
-    run(sc, args.input_file, args.output_dir)
+    run(sc, args.input_file, args.output_dir, cateory=args.category)
